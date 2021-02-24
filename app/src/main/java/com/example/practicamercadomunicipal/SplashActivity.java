@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,20 +32,13 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         startActivity(new Intent(this, StoresActivity.class));
         loadData();
-        Thread waiter = new Thread(new WaiterForNextActivity());
-        waiter.start();
-        try {
-            waiter.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     private void loadData() {
         DatabaseReference storesReference = FirebaseDatabase.getInstance().getReference("stores");
-        storesReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+        storesReference.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DataSnapshot snapshot = task.getResult();
                 List<Store> stores = new ArrayList<>();
                 snapshot.getChildren().forEach(child -> {
                     Store store = child.getValue(Store.class);
@@ -53,27 +47,13 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 });
                 AppData.storeList = stores;
-                storesLoaded = true;
-                storesReference.removeEventListener(this);
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.w(TAG, "Failed to read value.", error.toException());
-            }
+            tryNextActivity();
         });
     }
 
-    class WaiterForNextActivity implements Runnable {
-        @Override
-        public void run() {
-            while (!storesLoaded) {
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+    private void tryNextActivity() {
+        if (storesLoaded) {
             startActivity(new Intent(context, StoresActivity.class));
             finish();
         }
