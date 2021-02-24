@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PracticaMercadoMunicipal">
-        <activity android:name=".StoresActivity"></activity>
+        <activity android:name=".StoresActivity" />
+        <activity android:name=".SplashActivity"/>
     </application>
-
 </manifest>
