@@ -16,6 +16,5 @@
 
     <style name="SplashScreenTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_screen_background</item>
-        <item name="android:statusBarColor">@color/purple_500</item>
     </style>
 </resources>
