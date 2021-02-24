@@ -5,11 +5,10 @@ import java.util.List;
 
 public class Store {
 
-    String ID, name, image;
-    List<Product> products;
+    public String ID, name, image;
+    public List<Product> products;
 
     public Store() {
         products = new ArrayList<>();
     }
-
 }
