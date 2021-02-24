@@ -7,8 +7,20 @@
     tools:context=".StoresActivity">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/stores_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/no_stores_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No hay locales registrados."
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/stores_recyclerview"
+        app:layout_constraintEnd_toEndOf="@+id/stores_recyclerview"
+        app:layout_constraintStart_toStartOf="@+id/stores_recyclerview"
+        app:layout_constraintTop_toTopOf="@+id/stores_recyclerview" />
 </androidx.constraintlayout.widget.ConstraintLayout>
