@@ -6,13 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".StoresActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/stores_recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/no_stores_textview"
         android:layout_width="wrap_content"
@@ -23,4 +16,33 @@
         app:layout_constraintEnd_toEndOf="@+id/stores_recyclerview"
         app:layout_constraintStart_toStartOf="@+id/stores_recyclerview"
         app:layout_constraintTop_toTopOf="@+id/stores_recyclerview" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/stores_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stores_toolbar">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/stores_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/colorBackground"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/stores_menu"
+        app:title="Locales" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintTop_toBottomOf="@+id/stores_toolbar"
+        tools:layout_editor_absoluteX="16dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
