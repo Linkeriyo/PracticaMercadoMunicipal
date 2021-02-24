@@ -24,7 +24,6 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startActivity(new Intent(this, StoresActivity.class));
         loadData();
     }
 
@@ -42,13 +41,14 @@ public class SplashActivity extends AppCompatActivity {
                 });
                 AppData.storeList = stores;
             }
+            storesLoaded = true;
             tryNextActivity();
         });
     }
 
     private void tryNextActivity() {
         if (storesLoaded) {
-            startActivity(new Intent(context, StoresActivity.class));
+            startActivity(new Intent(context, LoginActivity.class));
             finish();
         }
     }
