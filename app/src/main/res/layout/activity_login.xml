@@ -36,7 +36,7 @@
         android:layout_marginTop="24dp"
         android:background="@drawable/round_button_login"
         android:ems="10"
-        android:hint="USUARIO"
+        android:hint="CORREO"
         android:inputType="textEmailAddress"
         android:padding="5dp"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
