@@ -48,7 +48,6 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-
         //Event Analytics
         final FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(this);
         Bundle bundle = new Bundle();
@@ -60,7 +59,10 @@ public class RegisterActivity extends AppCompatActivity {
         final EditText password = findViewById(R.id.editTextPasswordRegister);
         final EditText name = findViewById(R.id.editTextNameRegister);
         final EditText saldo = findViewById(R.id.editTextBalanceRegister);
-        List<Invoice> invoiceList = new ArrayList<Invoice>();
+
+        storage = FirebaseStorage.getInstance();
+
+        List<Invoice> invoiceList = new ArrayList<>();
         imageView = findViewById(R.id.imageButton);
         imageView.setOnClickListener(v -> {
             Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
@@ -101,22 +103,11 @@ public class RegisterActivity extends AppCompatActivity {
         mDatabase.child("users").child(id).setValue(user);
     }
 
-    private void progressBar() {
-        progressBar = findViewById(R.id.new_store_progressbar);
-        progressBar.setProgress(200);
-        progressBar.setVisibility(View.VISIBLE);
-        progressBar.setMax(1000);
-        ObjectAnimator.ofInt(progressBar, "progress", 999)
-                .setDuration(2000)
-                .start();
-    }
-
     private void putImage(String imageUri) {
         Glide.with(this)
                 .load(imageUri)
                 .centerCrop()
                 .into(imageView);
-        progressBar.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -124,7 +115,6 @@ public class RegisterActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE) {
             assert data != null;
-            progressBar();
             Uri uri = data.getData();
             StorageReference fileReference = storage.getReference("images").child(uri.getLastPathSegment());
             fileReference.putFile(uri).continueWithTask(task -> {
