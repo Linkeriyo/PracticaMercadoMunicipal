@@ -7,18 +7,6 @@
     android:background="@drawable/fondologin"
     tools:context=".LoginActivity">
 
-    <Button
-        android:id="@+id/buttonLogin2"
-        android:layout_width="250dp"
-        android:layout_height="52dp"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/round_button_login"
-        android:text="Iniciar Sesión"
-        app:layout_constraintEnd_toEndOf="@+id/editTextTextPassword"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/editTextTextPassword"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="250dp"
@@ -31,18 +19,18 @@
         app:srcCompat="@drawable/ic_baseline_account_circle_24" />
 
     <Button
-        android:id="@+id/buttonLogin"
+        android:id="@+id/buttonLoginEmail"
         android:layout_width="250dp"
         android:layout_height="52dp"
         android:layout_marginTop="32dp"
         android:background="@drawable/round_button_login"
         android:text="Iniciar Sesión"
-        app:layout_constraintEnd_toEndOf="@+id/editTextTextPassword"
-        app:layout_constraintStart_toStartOf="@+id/editTextTextPassword"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword" />
+        app:layout_constraintEnd_toEndOf="@+id/editTextPasswordLogin"
+        app:layout_constraintStart_toStartOf="@+id/editTextPasswordLogin"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPasswordLogin" />
 
     <EditText
-        android:id="@+id/editTextTextEmailAddress"
+        android:id="@+id/editTextEmailAddressLogin"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -56,7 +44,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <EditText
-        android:id="@+id/editTextTextPassword"
+        android:id="@+id/editTextPasswordLogin"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -65,19 +53,50 @@
         android:hint="CONTRASEÑA"
         android:inputType="textPassword"
         android:padding="5dp"
-        app:layout_constraintEnd_toEndOf="@+id/editTextTextEmailAddress"
-        app:layout_constraintStart_toStartOf="@+id/editTextTextEmailAddress"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress" />
+        app:layout_constraintEnd_toEndOf="@+id/editTextEmailAddressLogin"
+        app:layout_constraintStart_toStartOf="@+id/editTextEmailAddressLogin"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEmailAddressLogin" />
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="Funcion de administrador"
+        android:textAlignment="center"
         android:textColor="#56FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/buttonLogin"
-        app:layout_constraintStart_toStartOf="@+id/buttonLogin" />
+        app:layout_constraintEnd_toEndOf="@+id/buttonLoginEmail"
+        app:layout_constraintStart_toStartOf="@+id/buttonLoginEmail" />
+
+    <TextView
+        android:id="@+id/textViewRegister"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/round_button_register"
+        android:padding="10dp"
+        android:text="Registrarse"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="25dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="@+id/buttonLoginEmail"
+        app:layout_constraintStart_toStartOf="@+id/buttonLoginEmail" />
+
+    <TextView
+        android:id="@+id/textViewLoginGoogle"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/round_button_google"
+        android:padding="10dp"
+        android:text="GOOGLE"
+        android:textAlignment="center"
+        android:textColor="#095BAE"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="@+id/editTextPasswordLogin"
+        app:layout_constraintStart_toStartOf="@+id/editTextPasswordLogin"
+        app:layout_constraintTop_toBottomOf="@+id/buttonLoginEmail" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
