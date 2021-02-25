@@ -21,45 +21,48 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Si el usuario está logeado, procede a la siguiente actividad.
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            nextActivity();
+        }
+
         setContentView(R.layout.activity_login);
 
-        final EditText emailSign = (EditText) findViewById(R.id.editTextEmailAddressLogin);
-        final EditText passwordSign = (EditText) findViewById(R.id.editTextPasswordLogin);
-        final TextView create = (TextView) findViewById((R.id.textViewRegister));
-        Button login = (Button) findViewById(R.id.buttonLoginEmail);
+        final EditText emailSign = findViewById(R.id.editTextEmailAddressLogin);
+        final EditText passwordSign = findViewById(R.id.editTextPasswordLogin);
+        final TextView create = findViewById((R.id.textViewRegister));
+        Button login = findViewById(R.id.buttonLoginEmail);
 
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (emailSign.getText().toString().isEmpty() || passwordSign.getText().toString().isEmpty()) {
-                    Toast empty = Toast.makeText(getApplicationContext(), "Has dejado uno de los campo en blanco", Toast.LENGTH_SHORT);
-                    empty.show();
-                } else {
-                    FirebaseAuth.getInstance().signInWithEmailAndPassword(emailSign.getText().toString(), passwordSign.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                Toast correct = Toast.makeText(getApplicationContext(), "Inicio de sesión satisfactorio", Toast.LENGTH_SHORT);
-                                correct.show();
-                                Intent nextActivityIntent = new Intent(getApplicationContext(), StoresActivity.class);
-                                startActivity(nextActivityIntent);
-
-                            } else {
-                                Toast incorrect = Toast.makeText(getApplicationContext(), "No se pudo iniciar sesion, revisa los campos", Toast.LENGTH_SHORT);
-                                incorrect.show();
-                            }
+        login.setOnClickListener(v -> {
+            if (emailSign.getText().toString().isEmpty() || passwordSign.getText().toString().isEmpty()) {
+                Toast empty = Toast.makeText(getApplicationContext(), "Has dejado uno de los campo en blanco", Toast.LENGTH_SHORT);
+                empty.show();
+            } else {
+                FirebaseAuth.getInstance().signInWithEmailAndPassword(emailSign.getText().toString(), passwordSign.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Toast correct = Toast.makeText(getApplicationContext(), "Inicio de sesión satisfactorio", Toast.LENGTH_SHORT);
+                            correct.show();
+                            nextActivity();
+                        } else {
+                            Toast incorrect = Toast.makeText(getApplicationContext(), "No se pudo iniciar sesion, revisa los campos", Toast.LENGTH_SHORT);
+                            incorrect.show();
                         }
-                    });
-                }
+                    }
+                });
             }
         });
 
-        create.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent nextActivityIntent = new Intent(getApplicationContext(), RegisterActivity.class);
-                startActivity(nextActivityIntent);
-            }
+        create.setOnClickListener(v -> {
+            Intent nextActivityIntent = new Intent(getApplicationContext(), RegisterActivity.class);
+            startActivity(nextActivityIntent);
         });
+    }
+
+    public void nextActivity() {
+        Intent nextActivityIntent = new Intent(getApplicationContext(), StoresActivity.class);
+        startActivity(nextActivityIntent);
     }
 }
