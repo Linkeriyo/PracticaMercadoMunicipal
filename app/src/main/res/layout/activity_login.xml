@@ -7,19 +7,6 @@
     android:background="@drawable/fondologin"
     tools:context=".LoginActivity">
 
-    <Button
-        android:id="@+id/buttonLoginGoogle"
-        android:layout_width="250dp"
-        android:layout_height="52dp"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/round_button_login"
-        android:text="GOOGLE"
-        android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="@+id/editTextPasswordLogin"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/editTextPasswordLogin"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLoginEmail" />
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="250dp"
@@ -72,13 +59,43 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="Funcion de administrador"
+        android:textAlignment="center"
         android:textColor="#56FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/buttonLoginEmail"
         app:layout_constraintStart_toStartOf="@+id/buttonLoginEmail" />
+
+    <TextView
+        android:id="@+id/textViewRegister"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/round_button_register"
+        android:padding="20dp"
+        android:text="Registrarse"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="25dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="@+id/buttonLoginEmail"
+        app:layout_constraintStart_toStartOf="@+id/buttonLoginEmail" />
+
+    <TextView
+        android:id="@+id/textViewLoginGoogle"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/round_button_google"
+        android:padding="20dp"
+        android:text="GOOGLE"
+        android:textAlignment="center"
+        android:textColor="#095BAE"
+        app:layout_constraintEnd_toEndOf="@+id/editTextPasswordLogin"
+        app:layout_constraintStart_toStartOf="@+id/editTextPasswordLogin"
+        app:layout_constraintTop_toBottomOf="@+id/buttonLoginEmail" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
