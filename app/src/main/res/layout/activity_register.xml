@@ -7,6 +7,17 @@
     android:background="@drawable/backgroundregister"
     tools:context=".RegisterActivity">
 
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/textViewImagen"
+        app:layout_constraintEnd_toEndOf="@+id/imageButton"
+        app:layout_constraintStart_toStartOf="@+id/imageButton"
+        app:layout_constraintTop_toTopOf="@+id/imageButton"
+        tools:visibility="invisible" />
+
     <EditText
         android:id="@+id/editTextBalanceRegister"
         android:layout_width="250dp"
@@ -15,7 +26,7 @@
         android:background="@drawable/round_button_register_activity"
         android:ems="10"
         android:hint="SALDO"
-        android:inputType="textEmailAddress"
+        android:inputType="number"
         android:padding="5dp"
         app:layout_constraintEnd_toEndOf="@+id/editTextNameRegister"
         app:layout_constraintStart_toStartOf="@+id/editTextNameRegister"
@@ -29,7 +40,7 @@
         android:background="@drawable/round_button_register_activity"
         android:ems="10"
         android:hint="NOMBRE"
-        android:inputType="textEmailAddress"
+        android:inputType="textPersonName"
         android:padding="5dp"
         app:layout_constraintEnd_toEndOf="@+id/editTextPasswordRegister"
         app:layout_constraintStart_toStartOf="@+id/editTextPasswordRegister"
@@ -57,7 +68,7 @@
         android:background="@drawable/round_button_register_activity"
         android:ems="10"
         android:hint="CONTRASEÑA"
-        android:inputType="textEmailAddress"
+        android:inputType="textPassword"
         android:padding="5dp"
         app:layout_constraintEnd_toEndOf="@+id/editTextEmailAddressRegister"
         app:layout_constraintStart_toStartOf="@+id/editTextEmailAddressRegister"
