@@ -11,4 +11,11 @@ public class Store {
     public Store() {
         products = new ArrayList<>();
     }
+
+    public Store(String ID, String name, String image) {
+        this.ID = ID;
+        this.name = name;
+        this.image = image;
+        products = new ArrayList<>();
+    }
 }
