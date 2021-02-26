@@ -4,10 +4,10 @@ import java.util.List;
 
 public class User {
 
-    boolean admin;
-    String userID, name, image, email;
-    List<Invoice> invoice;
-    double balance;
+    public boolean admin;
+    public String userID, name, image, email;
+    public List<Invoice> invoice;
+    public double balance;
 
     public User(boolean admin, String userID, String name, String image, String email, List<Invoice> invoice, double balance) {
         this.admin = admin;
