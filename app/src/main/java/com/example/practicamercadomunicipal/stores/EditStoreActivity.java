@@ -39,7 +39,7 @@ public class EditStoreActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_store);
+        setContentView(R.layout.activity_edit_store);
         setupFirebaseVariables();
         setupViews();
         setupToolbar();
@@ -51,9 +51,9 @@ public class EditStoreActivity extends AppCompatActivity {
     }
 
     private void setupViews() {
-        nameTextView = findViewById(R.id.new_store_name_textview);
-        idTextView = findViewById(R.id.new_store_id_textview);
-        imageView = findViewById(R.id.new_store_image_imageview);
+        nameTextView = findViewById(R.id.edit_store_name_textview);
+        idTextView = findViewById(R.id.edit_store_id_textview);
+        imageView = findViewById(R.id.edit_store_image_imageview);
         imageView.setOnClickListener(v -> {
             Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
             startActivityForResult(galleryIntent, PICK_IMAGE);
@@ -61,11 +61,14 @@ public class EditStoreActivity extends AppCompatActivity {
     }
 
     private void setupToolbar() {
-        toolbar = findViewById(R.id.new_store_toolbar);
+        toolbar = findViewById(R.id.edit_store_toolbar);
         toolbar.setNavigationOnClickListener(v -> finish());
         toolbar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.new_store_add_option && isStoreOk()) {
-                Store store = new Store(idTextView.getText().toString(), nameTextView.getText().toString(), imageUri);
+            if (item.getItemId() == R.id.edit_store_confirm_option && isStoreOk()) {
+                if (postImageUri == null) {
+                    postImageUri = Uri.EMPTY;
+                }
+                Store store = new Store(idTextView.getText().toString(), nameTextView.getText().toString(), imageUri, postImageUri);
                 DatabaseReference storesReference = FirebaseDatabase.getInstance().getReference("stores");
                 storesReference.child(idTextView.getText().toString()).setValue(store)
                         .addOnCompleteListener(task -> finish());
@@ -108,7 +111,7 @@ public class EditStoreActivity extends AppCompatActivity {
     }
 
     private void progressBar() {
-        progressBar = findViewById(R.id.new_store_progressbar);
+        progressBar = findViewById(R.id.edit_store_progressbar);
         progressBar.setProgress(200);
         progressBar.setVisibility(View.VISIBLE);
         progressBar.setMax(1000);

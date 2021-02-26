@@ -4,7 +4,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -65,8 +64,11 @@ public class NewStoreActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.new_store_toolbar);
         toolbar.setNavigationOnClickListener(v -> finish());
         toolbar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.new_store_add_option && isStoreOk()) {
-                Store store = new Store(idTextView.getText().toString(), nameTextView.getText().toString(), imageUri);
+            if (item.getItemId() == R.id.edit_store_confirm_option && isStoreOk()) {
+                if (postImageUri == null) {
+                    postImageUri = Uri.EMPTY;
+                }
+                Store store = new Store(idTextView.getText().toString(), nameTextView.getText().toString(), imageUri, postImageUri);
                 DatabaseReference storesReference = FirebaseDatabase.getInstance().getReference("stores");
                 storesReference.child(idTextView.getText().toString()).setValue(store)
                         .addOnCompleteListener(task -> finish());

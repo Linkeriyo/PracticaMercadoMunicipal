@@ -60,6 +60,17 @@ public class StoresActivity extends AppCompatActivity{
         if (AppData.storeList.isEmpty()) {
             findViewById(R.id.no_stores_textview).setVisibility(View.VISIBLE);
         }
+        recyclerView.getAdapter().registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                if (!AppData.storeList.isEmpty()) {
+                    findViewById(R.id.no_stores_textview).setVisibility(View.INVISIBLE);
+                } else {
+                    findViewById(R.id.no_stores_textview).setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     private void setupDatabaseListener() {
@@ -69,7 +80,7 @@ public class StoresActivity extends AppCompatActivity{
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<Store> stores = new ArrayList<>();
                 snapshot.getChildren().forEach(child -> {
-                    stores.add(child.getValue(Store.class));
+                      stores.add(child.getValue(Store.class));
                 });
                 AppData.storeList.clear();
                 AppData.storeList.addAll(stores);

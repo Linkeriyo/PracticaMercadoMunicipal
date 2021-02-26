@@ -7,7 +7,7 @@
     tools:context=".stores.NewStoreActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/new_store_toolbar"
+        android:id="@+id/edit_store_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?android:attr/colorBackground"
@@ -15,9 +15,9 @@
         android:theme="?attr/actionBarTheme"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/new_store_menu"
+        app:menu="@menu/edit_store_menu"
         app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
-        app:title="Nuevo local" />
+        app:title="Editar local" />
 
     <View
         android:id="@+id/divider3"
@@ -25,10 +25,10 @@
         android:layout_height="1dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_store_toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_store_toolbar" />
 
     <com.mikhaellopez.circularimageview.CircularImageView
-        android:id="@+id/new_store_image_imageview"
+        android:id="@+id/edit_store_image_imageview"
         android:layout_width="225dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
@@ -40,38 +40,38 @@
         app:layout_constraintTop_toBottomOf="@+id/divider3" />
 
     <EditText
-        android:id="@+id/new_store_name_textview"
+        android:id="@+id/edit_store_name_textview"
         android:layout_width="225dp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Nombre del local"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="@+id/new_store_id_textview"
-        app:layout_constraintStart_toStartOf="@+id/new_store_id_textview"
-        app:layout_constraintTop_toBottomOf="@+id/new_store_id_textview" />
+        app:layout_constraintEnd_toEndOf="@+id/edit_store_id_textview"
+        app:layout_constraintStart_toStartOf="@+id/edit_store_id_textview"
+        app:layout_constraintTop_toBottomOf="@+id/edit_store_id_textview" />
 
     <EditText
-        android:id="@+id/new_store_id_textview"
+        android:id="@+id/edit_store_id_textview"
         android:layout_width="225dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="ID del local"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="@+id/new_store_image_imageview"
+        app:layout_constraintEnd_toEndOf="@+id/edit_store_image_imageview"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/new_store_image_imageview"
-        app:layout_constraintTop_toBottomOf="@+id/new_store_image_imageview" />
+        app:layout_constraintStart_toStartOf="@+id/edit_store_image_imageview"
+        app:layout_constraintTop_toBottomOf="@+id/edit_store_image_imageview" />
 
     <ProgressBar
-        android:id="@+id/new_store_progressbar"
+        android:id="@+id/edit_store_progressbar"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/new_store_image_imageview"
-        app:layout_constraintEnd_toEndOf="@+id/new_store_image_imageview"
-        app:layout_constraintStart_toStartOf="@+id/new_store_image_imageview"
-        app:layout_constraintTop_toTopOf="@+id/new_store_image_imageview" />
+        app:layout_constraintBottom_toBottomOf="@+id/edit_store_image_imageview"
+        app:layout_constraintEnd_toEndOf="@+id/edit_store_image_imageview"
+        app:layout_constraintStart_toStartOf="@+id/edit_store_image_imageview"
+        app:layout_constraintTop_toTopOf="@+id/edit_store_image_imageview" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

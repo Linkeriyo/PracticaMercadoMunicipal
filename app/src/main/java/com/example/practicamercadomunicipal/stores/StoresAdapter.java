@@ -18,6 +18,8 @@ import com.example.practicamercadomunicipal.data.AppData;
 import com.example.practicamercadomunicipal.models.Store;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
@@ -46,6 +48,11 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.StoreViewH
         holder.storeIdTextView.setText(store.ID);
 
         holder.deleteStoreButton.setOnClickListener(v -> {
+            //Borrar la imagen de firebase.
+            StorageReference imagesReference = FirebaseStorage.getInstance().getReference("images");
+            imagesReference.child(AppData.storeList.get(position).imgStorage.getLastPathSegment()).delete();
+
+            //Borrar el local de la base de datos.
             DatabaseReference storesReference = FirebaseDatabase.getInstance().getReference("stores");
             storesReference.child(AppData.storeList.get(position).ID).removeValue().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
