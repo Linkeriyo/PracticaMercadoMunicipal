@@ -2,6 +2,7 @@ package com.example.practicamercadomunicipal.stores;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.example.practicamercadomunicipal.R;
 import com.example.practicamercadomunicipal.data.AppData;
 import com.example.practicamercadomunicipal.models.Store;
+import com.example.practicamercadomunicipal.products.ProductsActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -49,8 +51,9 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.StoreViewH
 
         holder.deleteStoreButton.setOnClickListener(v -> {
             //Borrar la imagen de firebase.
+            Uri storageUri = Uri.parse(AppData.storeList.get(position).imgStorage);
             StorageReference imagesReference = FirebaseStorage.getInstance().getReference("images");
-            imagesReference.child(AppData.storeList.get(position).imgStorage.getLastPathSegment()).delete();
+            imagesReference.child(storageUri.getLastPathSegment()).delete();
 
             //Borrar el local de la base de datos.
             DatabaseReference storesReference = FirebaseDatabase.getInstance().getReference("stores");
@@ -62,7 +65,11 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.StoreViewH
         });
 
         holder.editStoreButton.setOnClickListener(v -> {
-            context.startActivity(new Intent(context, EditStoreActivity.class));
+            context.startActivity(new Intent(context, EditStoreActivity.class).putExtra("storeNumber", position));
+        });
+
+        holder.itemView.setOnClickListener(v -> {
+            context.startActivity(new Intent(context, ProductsActivity.class).putExtra("storeNumber", position));
         });
     }
 

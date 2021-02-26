@@ -1,4 +1,4 @@
-package com.example.practicamercadomunicipal.stores;
+package com.example.practicamercadomunicipal.products;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -25,7 +25,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.Objects;
 
-public class EditStoreActivity extends AppCompatActivity {
+public class EditProductActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 1;
     FirebaseDatabase database;

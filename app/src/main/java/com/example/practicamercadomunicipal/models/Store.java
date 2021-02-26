@@ -7,8 +7,7 @@ import java.util.List;
 
 public class Store {
 
-    public Uri image, imgStorage;
-    public String ID, name;
+    public String ID, name, image, imgStorage;
     public List<Product> products;
 
     public Store() {
@@ -18,16 +17,16 @@ public class Store {
     public Store(String ID, String name, String image, String imgStorage) {
         this.ID = ID;
         this.name = name;
-        this.image = Uri.parse(image);
-        this.imgStorage = Uri.parse(imgStorage);
+        this.image = image;
+        this.imgStorage = imgStorage;
         products = new ArrayList<>();
     }
 
     public Store(String ID, String name, Uri image, Uri imgStorage) {
         this.ID = ID;
         this.name = name;
-        this.image = image;
-        this.imgStorage = imgStorage;
+        this.image = image.toString();
+        this.imgStorage = imgStorage.toString();
         products = new ArrayList<>();
     }
 }

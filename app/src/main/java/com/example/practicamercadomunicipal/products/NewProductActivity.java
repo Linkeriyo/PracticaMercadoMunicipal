@@ -1,4 +1,4 @@
-package com.example.practicamercadomunicipal.stores;
+package com.example.practicamercadomunicipal.products;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -16,7 +16,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.example.practicamercadomunicipal.R;
-import com.example.practicamercadomunicipal.data.AppData;
 import com.example.practicamercadomunicipal.models.Store;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -25,7 +24,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.Objects;
 
-public class EditStoreActivity extends AppCompatActivity {
+public class NewProductActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 1;
     FirebaseDatabase database;
@@ -35,16 +34,14 @@ public class EditStoreActivity extends AppCompatActivity {
     ImageView imageView;
     Uri imageUri, postImageUri;
     ProgressBar progressBar;
-    Store store;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_store);
+        setContentView(R.layout.activity_new_store);
         setupFirebaseVariables();
         setupViews();
         setupToolbar();
-        putValues();
     }
 
     private void setupFirebaseVariables() {
@@ -53,18 +50,18 @@ public class EditStoreActivity extends AppCompatActivity {
     }
 
     private void setupViews() {
-        nameTextView = findViewById(R.id.edit_store_name_textview);
-        idTextView = findViewById(R.id.edit_store_id_textview);
-        imageView = findViewById(R.id.edit_store_image_imageview);
+        nameTextView = findViewById(R.id.new_store_name_textview);
+        idTextView = findViewById(R.id.new_store_id_textview);
+        imageView = findViewById(R.id.new_store_image_imageview);
         imageView.setOnClickListener(v -> {
             Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
             startActivityForResult(galleryIntent, PICK_IMAGE);
         });
-        progressBar = findViewById(R.id.edit_store_progressbar);
+        progressBar = findViewById(R.id.new_store_progressbar);
     }
 
     private void setupToolbar() {
-        toolbar = findViewById(R.id.edit_store_toolbar);
+        toolbar = findViewById(R.id.new_store_toolbar);
         toolbar.setNavigationOnClickListener(v -> finish());
         toolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.edit_store_confirm_option && isStoreOk()) {
@@ -83,15 +80,6 @@ public class EditStoreActivity extends AppCompatActivity {
             }
             return true;
         });
-    }
-
-    private void putValues() {
-        int storeNumber = getIntent().getIntExtra("storeNumber", 0);
-        store = AppData.storeList.get(storeNumber);
-
-        idTextView.setText(store.ID);
-        nameTextView.setText(store.name);
-        Glide.with(this).load(store.image).centerCrop().into(imageView);
     }
 
     @Override
