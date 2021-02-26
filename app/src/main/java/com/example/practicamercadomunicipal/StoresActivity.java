@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.practicamercadomunicipal.data.AppData;
 import com.example.practicamercadomunicipal.models.Store;
 import com.example.practicamercadomunicipal.recycleradapters.StoresAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,7 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StoresActivity extends AppCompatActivity implements StoresAdapter.OnStoreClickListener {
+public class StoresActivity extends AppCompatActivity{
 
     RecyclerView recyclerView;
     Toolbar toolbar;
@@ -43,6 +44,10 @@ public class StoresActivity extends AppCompatActivity implements StoresAdapter.O
         toolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.add_store_option) {
                 startActivity(new Intent(this, NewStoreActivity.class));
+            } else if (item.getItemId() == R.id.sign_out_option) {
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
             }
             return true;
         });
@@ -52,7 +57,7 @@ public class StoresActivity extends AppCompatActivity implements StoresAdapter.O
         recyclerView = findViewById(R.id.stores_recyclerview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new StoresAdapter(AppData.storeList, this, this));
+        recyclerView.setAdapter(new StoresAdapter(AppData.storeList, this));
         if (AppData.storeList.isEmpty()) {
             findViewById(R.id.no_stores_textview).setVisibility(View.VISIBLE);
         }
@@ -69,7 +74,7 @@ public class StoresActivity extends AppCompatActivity implements StoresAdapter.O
                 });
                 AppData.storeList.clear();
                 AppData.storeList.addAll(stores);
-                updateRecyclerView();
+                recyclerView.getAdapter().notifyDataSetChanged();
             }
 
             @Override
@@ -78,16 +83,4 @@ public class StoresActivity extends AppCompatActivity implements StoresAdapter.O
         });
     }
 
-    private void updateRecyclerView() {
-        recyclerView.getAdapter().notifyDataSetChanged();
-        recyclerView.invalidate();
-    }
-
-    @Override
-    public void onStoreClick(int position) {
-        Toast.makeText(this,
-                "owo tocaste la posición " + position,
-                Toast.LENGTH_SHORT
-        ).show();
-    }
 }
