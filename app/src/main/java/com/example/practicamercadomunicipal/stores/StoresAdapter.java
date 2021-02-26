@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.example.practicamercadomunicipal.R;
 import com.example.practicamercadomunicipal.data.AppData;
 import com.example.practicamercadomunicipal.models.Store;
+import com.example.practicamercadomunicipal.products.ProductsActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -65,6 +66,10 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.StoreViewH
 
         holder.editStoreButton.setOnClickListener(v -> {
             context.startActivity(new Intent(context, EditStoreActivity.class).putExtra("storeNumber", position));
+        });
+
+        holder.itemView.setOnClickListener(v -> {
+            context.startActivity(new Intent(context, ProductsActivity.class).putExtra("storeNumber", position));
         });
     }
 
