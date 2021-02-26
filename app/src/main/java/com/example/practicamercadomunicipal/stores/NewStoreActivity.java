@@ -1,4 +1,4 @@
-package com.example.practicamercadomunicipal;
+package com.example.practicamercadomunicipal.stores;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.practicamercadomunicipal.R;
 import com.example.practicamercadomunicipal.models.Store;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

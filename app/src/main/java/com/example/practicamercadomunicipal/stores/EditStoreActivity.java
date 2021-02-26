@@ -1,4 +1,4 @@
-package com.example.practicamercadomunicipal;
+package com.example.practicamercadomunicipal.stores;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
+import com.example.practicamercadomunicipal.R;
 import com.example.practicamercadomunicipal.models.Store;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

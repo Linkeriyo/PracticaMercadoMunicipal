@@ -1,4 +1,4 @@
-package com.example.practicamercadomunicipal.recycleradapters;
+package com.example.practicamercadomunicipal.products;
 
 import android.content.Context;
 import android.view.LayoutInflater;
