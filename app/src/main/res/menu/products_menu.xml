@@ -7,7 +7,4 @@
         android:icon="@drawable/ic_baseline_note_add_24"
         app:showAsAction="always"
         android:title="Nuevo" />
-    <item
-        android:id="@+id/sign_out_option"
-        android:title="Cerrar sesión" />
 </menu>

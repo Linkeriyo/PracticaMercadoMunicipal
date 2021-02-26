@@ -17,12 +17,13 @@ import androidx.appcompat.widget.Toolbar;
 import com.bumptech.glide.Glide;
 import com.example.practicamercadomunicipal.R;
 import com.example.practicamercadomunicipal.data.AppData;
-import com.example.practicamercadomunicipal.models.Store;
+import com.example.practicamercadomunicipal.models.Product;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.List;
 import java.util.Objects;
 
 public class EditProductActivity extends AppCompatActivity {
@@ -31,20 +32,31 @@ public class EditProductActivity extends AppCompatActivity {
     FirebaseDatabase database;
     FirebaseStorage storage;
     Toolbar toolbar;
-    TextView nameTextView, idTextView;
+    TextView descTextView, idTextView, priceTextView;
     ImageView imageView;
     Uri imageUri, postImageUri;
     ProgressBar progressBar;
-    Store store;
+    Product product;
+    String storeID;
+    List<Product> productList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_store);
+        setContentView(R.layout.activity_edit_product);
+        setupLocalVariables();
         setupFirebaseVariables();
         setupViews();
         setupToolbar();
         putValues();
+    }
+
+    private void setupLocalVariables() {
+        storeID = getIntent().getStringExtra("storeID");
+        productList = AppData.getStoreById(storeID).products;
+        product = productList.get(getIntent().getIntExtra("productNumber", 0));
+        imageUri = Uri.parse(product.image);
+        postImageUri = Uri.parse(product.imgStorage);
     }
 
     private void setupFirebaseVariables() {
@@ -53,27 +65,31 @@ public class EditProductActivity extends AppCompatActivity {
     }
 
     private void setupViews() {
-        nameTextView = findViewById(R.id.edit_store_name_textview);
-        idTextView = findViewById(R.id.edit_store_id_textview);
-        imageView = findViewById(R.id.edit_store_image_imageview);
+        descTextView = findViewById(R.id.edit_product_name_textview);
+        idTextView = findViewById(R.id.edit_product_id_textview);
+        priceTextView = findViewById(R.id.edit_product_price_textview);
+        imageView = findViewById(R.id.edit_product_image_imageview);
         imageView.setOnClickListener(v -> {
             Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
             startActivityForResult(galleryIntent, PICK_IMAGE);
         });
-        progressBar = findViewById(R.id.edit_store_progressbar);
+        progressBar = findViewById(R.id.edit_product_progressbar);
     }
 
     private void setupToolbar() {
-        toolbar = findViewById(R.id.edit_store_toolbar);
+        toolbar = findViewById(R.id.edit_product_toolbar);
         toolbar.setNavigationOnClickListener(v -> finish());
         toolbar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.edit_store_confirm_option && isStoreOk()) {
+            if (item.getItemId() == R.id.edit_product_confirm_option && isProductOk()) {
                 if (postImageUri == null) {
                     postImageUri = Uri.EMPTY;
                 }
-                Store store = new Store(idTextView.getText().toString(), nameTextView.getText().toString(), imageUri, postImageUri);
-                DatabaseReference storesReference = FirebaseDatabase.getInstance().getReference("stores");
-                storesReference.child(idTextView.getText().toString()).setValue(store)
+                String id = idTextView.getText().toString();
+                String desc = descTextView.getText().toString();
+                double price = Double.parseDouble(priceTextView.getText().toString());
+                Product product = new Product(storeID, id, desc, price, imageUri, postImageUri);
+                DatabaseReference productsReference = FirebaseDatabase.getInstance().getReference("products");
+                productsReference.child(idTextView.getText().toString()).setValue(product)
                         .addOnCompleteListener(task -> finish());
             } else {
                 Toast.makeText(this,
@@ -86,12 +102,12 @@ public class EditProductActivity extends AppCompatActivity {
     }
 
     private void putValues() {
-        int storeNumber = getIntent().getIntExtra("storeNumber", 0);
-        store = AppData.storeList.get(storeNumber);
+        int productNumber = getIntent().getIntExtra("productNumber", 0);
+        productList.get(productNumber);
 
-        idTextView.setText(store.ID);
-        nameTextView.setText(store.name);
-        Glide.with(this).load(store.image).centerCrop().into(imageView);
+        idTextView.setText(product.ID);
+        descTextView.setText(product.desc);
+        Glide.with(this).load(product.image).centerCrop().into(imageView);
     }
 
     @Override
@@ -130,8 +146,8 @@ public class EditProductActivity extends AppCompatActivity {
         progressBar.setVisibility(View.INVISIBLE);
     }
 
-    private boolean isStoreOk() {
-        return (!nameTextView.getText().toString().isEmpty()
+    private boolean isProductOk() {
+        return (!descTextView.getText().toString().isEmpty()
                 && !idTextView.getText().toString().isEmpty());
     }
 }

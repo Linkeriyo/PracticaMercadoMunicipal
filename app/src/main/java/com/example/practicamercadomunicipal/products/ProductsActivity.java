@@ -29,11 +29,13 @@ public class ProductsActivity extends AppCompatActivity{
     RecyclerView recyclerView;
     Toolbar toolbar;
     List<Product> productList;
+    Store store;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_products);
+        store = AppData.storeList.get(getIntent().getIntExtra("storeNumber", 0));
         setupProductList();
         setupRecyclerView();
         setupToolBar();
@@ -43,6 +45,7 @@ public class ProductsActivity extends AppCompatActivity{
     @SuppressLint("NonConstantResourceId")
     private void setupToolBar() {
         toolbar = findViewById(R.id.products_toolbar);
+        toolbar.setSubtitle(store.name);
         toolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.add_product_option) {
                 startActivity(new Intent(this, NewProductActivity.class));
@@ -55,7 +58,7 @@ public class ProductsActivity extends AppCompatActivity{
         recyclerView = findViewById(R.id.products_recyclerview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new ProductsAdapter(productList, this));
+        recyclerView.setAdapter(new ProductsAdapter(productList, this, store));
         if (productList.isEmpty()) {
             findViewById(R.id.no_products_textview).setVisibility(View.VISIBLE);
         }
@@ -93,7 +96,6 @@ public class ProductsActivity extends AppCompatActivity{
     }
 
     private void setupProductList() {
-        Store store = AppData.storeList.get(getIntent().getIntExtra("storeNumber", 0));
         if (store.products != null) {
             productList = store.products;
         } else {

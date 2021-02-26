@@ -41,6 +41,7 @@ public class NewProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_product);
         storeID = getIntent().getStringExtra("storeID");
+        storeID = getIntent().getStringExtra("storeID");
         setupFirebaseVariables();
         setupViews();
         setupToolbar();

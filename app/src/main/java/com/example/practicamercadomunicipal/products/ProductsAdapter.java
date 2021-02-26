@@ -15,9 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.practicamercadomunicipal.R;
-import com.example.practicamercadomunicipal.data.AppData;
 import com.example.practicamercadomunicipal.models.Product;
-import com.example.practicamercadomunicipal.products.EditProductActivity;
+import com.example.practicamercadomunicipal.models.Store;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -29,10 +28,12 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 
     private final List<Product> productList;
     private final Context context;
+    private final Store store;
 
-    public ProductsAdapter(List<Product> productList, Context context) {
+    public ProductsAdapter(List<Product> productList, Context context, Store store) {
         this.productList = productList;
         this.context = context;
+        this.store = store;
     }
 
     @NonNull
@@ -65,7 +66,10 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         });
 
         holder.editProductButton.setOnClickListener(v -> {
-            context.startActivity(new Intent(context, EditProductActivity.class).putExtra("productNumber", position));
+            context.startActivity(new Intent(context, EditProductActivity.class)
+                    .putExtra("productNumber", position)
+                    .putExtra("storeID", store.ID)
+            );
         });
 
         holder.itemView.setOnClickListener(v -> {
