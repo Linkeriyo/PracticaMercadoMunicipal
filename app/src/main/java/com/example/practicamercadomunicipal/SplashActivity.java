@@ -4,13 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.practicamercadomunicipal.data.AppData;
 import com.example.practicamercadomunicipal.models.Store;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Logger;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +34,9 @@ public class SplashActivity extends AppCompatActivity {
 
     private void loadData() {
         DatabaseReference storesReference = FirebaseDatabase.getInstance().getReference("stores");
-        storesReference.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DataSnapshot snapshot = task.getResult();
+        storesReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<Store> stores = new ArrayList<>();
                 snapshot.getChildren().forEach(child -> {
                     Store store = child.getValue(Store.class);
@@ -40,9 +45,15 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 });
                 AppData.storeList = stores;
+                storesLoaded = true;
+                tryNextActivity();
+                storesReference.removeEventListener(this);
             }
-            storesLoaded = true;
-            tryNextActivity();
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                error.toException().printStackTrace();
+            }
         });
     }
 
