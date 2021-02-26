@@ -1,6 +1,5 @@
 package com.example.practicamercadomunicipal.stores;
 
-import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,6 +16,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.example.practicamercadomunicipal.R;
+import com.example.practicamercadomunicipal.data.AppData;
 import com.example.practicamercadomunicipal.models.Store;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -35,6 +35,7 @@ public class EditStoreActivity extends AppCompatActivity {
     ImageView imageView;
     Uri imageUri, postImageUri;
     ProgressBar progressBar;
+    Store store;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class EditStoreActivity extends AppCompatActivity {
         setupFirebaseVariables();
         setupViews();
         setupToolbar();
+        putValues();
     }
 
     private void setupFirebaseVariables() {
@@ -58,6 +60,7 @@ public class EditStoreActivity extends AppCompatActivity {
             Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
             startActivityForResult(galleryIntent, PICK_IMAGE);
         });
+        progressBar = findViewById(R.id.edit_store_progressbar);
     }
 
     private void setupToolbar() {
@@ -82,12 +85,21 @@ public class EditStoreActivity extends AppCompatActivity {
         });
     }
 
+    private void putValues() {
+        int storeNumber = getIntent().getIntExtra("storeNumber", 0);
+        store = AppData.storeList.get(storeNumber);
+
+        idTextView.setText(store.ID);
+        nameTextView.setText(store.name);
+        Glide.with(this).load(store.image).centerCrop().into(imageView);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE) {
             if (data != null) {
-                progressBar();
+                progressBar.setVisibility(View.VISIBLE);
                 Uri uri = data.getData();
                 StorageReference fileReference = storage.getReference("images").child(uri.getLastPathSegment());
                 fileReference.putFile(uri).continueWithTask(task -> {
@@ -108,16 +120,6 @@ public class EditStoreActivity extends AppCompatActivity {
                 });
             }
         }
-    }
-
-    private void progressBar() {
-        progressBar = findViewById(R.id.edit_store_progressbar);
-        progressBar.setProgress(200);
-        progressBar.setVisibility(View.VISIBLE);
-        progressBar.setMax(1000);
-        ObjectAnimator.ofInt(progressBar, "progress", 999)
-                .setDuration(2000)
-                .start();
     }
 
     private void putImage(Uri imageUri) {

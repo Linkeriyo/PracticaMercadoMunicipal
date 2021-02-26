@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/edit_store_confirm_option"
-        android:icon="@drawable/ic_baseline_arrow_forward_24"
+        android:icon="@drawable/ic_baseline_check_24"
         android:title="Añadir"
         app:showAsAction="always" />
 </menu>

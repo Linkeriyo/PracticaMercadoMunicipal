@@ -2,6 +2,7 @@ package com.example.practicamercadomunicipal.stores;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,8 +50,9 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.StoreViewH
 
         holder.deleteStoreButton.setOnClickListener(v -> {
             //Borrar la imagen de firebase.
+            Uri storageUri = Uri.parse(AppData.storeList.get(position).imgStorage);
             StorageReference imagesReference = FirebaseStorage.getInstance().getReference("images");
-            imagesReference.child(AppData.storeList.get(position).imgStorage.getLastPathSegment()).delete();
+            imagesReference.child(storageUri.getLastPathSegment()).delete();
 
             //Borrar el local de la base de datos.
             DatabaseReference storesReference = FirebaseDatabase.getInstance().getReference("stores");
@@ -62,7 +64,7 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.StoreViewH
         });
 
         holder.editStoreButton.setOnClickListener(v -> {
-            context.startActivity(new Intent(context, EditStoreActivity.class));
+            context.startActivity(new Intent(context, EditStoreActivity.class).putExtra("storeNumber", position));
         });
     }
 
