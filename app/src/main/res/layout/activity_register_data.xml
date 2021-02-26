@@ -5,7 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/backgroundregister"
-    tools:context=".RegisterActivity">
+    tools:context=".RegisterDataActivity">
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/new_store_image_imageview2"
+        android:layout_width="225dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/ic_baseline_person_add_24"
+        app:civ_border="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/editTextBalanceRegister"
@@ -25,54 +36,15 @@
         android:id="@+id/editTextNameRegister"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/round_button_register_activity"
         android:ems="10"
         android:hint="NOMBRE"
         android:inputType="textPersonName"
         android:padding="5dp"
-        app:layout_constraintEnd_toEndOf="@+id/editTextPasswordRegister"
-        app:layout_constraintStart_toStartOf="@+id/editTextPasswordRegister"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPasswordRegister" />
-
-    <EditText
-        android:id="@+id/editTextEmailAddressRegister"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/round_button_register_activity"
-        android:ems="10"
-        android:hint="CORREO"
-        android:inputType="textEmailAddress"
-        android:padding="5dp"
-        app:layout_constraintEnd_toEndOf="@+id/imageButton"
-        app:layout_constraintStart_toStartOf="@+id/imageButton"
+        app:layout_constraintEnd_toEndOf="@+id/textViewImagen"
+        app:layout_constraintStart_toStartOf="@+id/textViewImagen"
         app:layout_constraintTop_toBottomOf="@+id/textViewImagen" />
-
-    <EditText
-        android:id="@+id/editTextPasswordRegister"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/round_button_register_activity"
-        android:ems="10"
-        android:hint="CONTRASEÑA"
-        android:inputType="textPassword"
-        android:padding="5dp"
-        app:layout_constraintEnd_toEndOf="@+id/editTextEmailAddressRegister"
-        app:layout_constraintStart_toStartOf="@+id/editTextEmailAddressRegister"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEmailAddressRegister" />
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="250dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/round_button_imagen"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_person_add_24" />
 
     <TextView
         android:id="@+id/textViewImagen"
@@ -83,9 +55,9 @@
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/imageButton"
-        app:layout_constraintStart_toStartOf="@+id/imageButton"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton" />
+        app:layout_constraintEnd_toEndOf="@+id/new_store_image_imageview2"
+        app:layout_constraintStart_toStartOf="@+id/new_store_image_imageview2"
+        app:layout_constraintTop_toBottomOf="@+id/new_store_image_imageview2" />
 
     <TextView
         android:id="@+id/textViewCreate"

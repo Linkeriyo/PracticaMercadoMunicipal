@@ -56,8 +56,9 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         create.setOnClickListener(v -> {
-            Intent nextActivityIntent = new Intent(getApplicationContext(), RegisterActivity.class);
+            Intent nextActivityIntent = new Intent(getApplicationContext(), RegisterEmailActivity.class);
             startActivity(nextActivityIntent);
+            finish();
         });
     }
 
