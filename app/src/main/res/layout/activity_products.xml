@@ -10,7 +10,7 @@
         android:id="@+id/no_products_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No hay locales registrados."
+        android:text="No hay productos registrados."
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/products_recyclerview"
         app:layout_constraintEnd_toEndOf="@+id/products_recyclerview"
