@@ -32,7 +32,7 @@ public class NewStoreActivity extends AppCompatActivity {
     Toolbar toolbar;
     TextView nameTextView, idTextView;
     ImageView imageView;
-    String imageUri = "";
+    Uri imageUri, postImageUri;
     ProgressBar progressBar;
 
     @Override
@@ -82,21 +82,27 @@ public class NewStoreActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE) {
-            assert data != null;
-            progressBar();
-            Uri uri = data.getData();
-            StorageReference fileReference = storage.getReference("images").child(uri.getLastPathSegment());
-            fileReference.putFile(uri).continueWithTask(task -> {
-                if (!task.isSuccessful()) {
-                    throw Objects.requireNonNull(task.getException());
-                }
-                return fileReference.getDownloadUrl();
-            }).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    imageUri = Objects.requireNonNull(task.getResult()).toString();
-                    putImage(imageUri);
-                }
-            });
+            if (data != null) {
+                progressBar();
+                Uri uri = data.getData();
+                StorageReference fileReference = storage.getReference("images").child(uri.getLastPathSegment());
+                fileReference.putFile(uri).continueWithTask(task -> {
+                    if (!task.isSuccessful()) {
+                        throw Objects.requireNonNull(task.getException());
+                    }
+                    return fileReference.getDownloadUrl();
+                }).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        imageUri = Objects.requireNonNull(task.getResult());
+                        if (postImageUri != null) {
+                            StorageReference previousFileReference = storage.getReference("images").child(postImageUri.getLastPathSegment());
+                            previousFileReference.delete();
+                        }
+                        putImage(imageUri);
+                        postImageUri = uri;
+                    }
+                });
+            }
         }
     }
 
@@ -110,7 +116,7 @@ public class NewStoreActivity extends AppCompatActivity {
                 .start();
     }
 
-    private void putImage(String imageUri) {
+    private void putImage(Uri imageUri) {
         Glide.with(this)
                 .load(imageUri)
                 .centerCrop()

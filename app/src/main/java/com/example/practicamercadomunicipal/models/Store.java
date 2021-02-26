@@ -1,5 +1,7 @@
 package com.example.practicamercadomunicipal.models;
 
+import android.net.Uri;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,13 @@ public class Store {
         this.ID = ID;
         this.name = name;
         this.image = image;
+        products = new ArrayList<>();
+    }
+
+    public Store(String ID, String name, Uri image) {
+        this.ID = ID;
+        this.name = name;
+        this.image = image.toString();
         products = new ArrayList<>();
     }
 }
