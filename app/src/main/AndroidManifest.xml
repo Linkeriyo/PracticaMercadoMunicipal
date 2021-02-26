@@ -11,11 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PracticaMercadoMunicipal">
-        <activity android:name=".NewStoreActivity" />
+        <activity android:name=".stores.NewStoreActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".ProductsActivity" />
-        <activity android:name=".StoresActivity" />
+        <activity android:name=".products.ProductsActivity" />
+        <activity android:name=".stores.StoresActivity" />
         <activity
             android:name=".SplashActivity"
             android:theme="@style/SplashScreenTheme">
