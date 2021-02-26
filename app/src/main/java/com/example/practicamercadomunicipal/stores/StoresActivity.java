@@ -1,5 +1,6 @@
 package com.example.practicamercadomunicipal.stores;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -38,15 +39,19 @@ public class StoresActivity extends AppCompatActivity{
         setupDatabaseListener();
     }
 
+    @SuppressLint("NonConstantResourceId")
     private void setupToolBar() {
         toolbar = findViewById(R.id.stores_toolbar);
         toolbar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.add_store_option) {
-                startActivity(new Intent(this, NewStoreActivity.class));
-            } else if (item.getItemId() == R.id.sign_out_option) {
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(this, LoginActivity.class));
-                finish();
+            switch (item.getItemId()) {
+                case R.id.add_store_option:
+                    startActivity(new Intent(this, NewStoreActivity.class));
+                    break;
+                case R.id.sign_out_option:
+                    FirebaseAuth.getInstance().signOut();
+                    startActivity(new Intent(this, LoginActivity.class));
+                    finish();
+                    break;
             }
             return true;
         });
