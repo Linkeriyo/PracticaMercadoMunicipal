@@ -48,22 +48,6 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
         holder.userNameTextView.setText(user.name);
         holder.userEmailTextView.setText(user.email);
         holder.userBalanceTextView.setText(balanceToString(user.balance));
-
-        holder.deleteUserButton.setOnClickListener(v -> {
-            //Borrar la imagen de firebase.
-            Uri storageUri = Uri.parse(userList.get(position).imgStorage);
-            StorageReference imagesReference = FirebaseStorage.getInstance().getReference("images");
-            imagesReference.child(storageUri.getLastPathSegment()).delete();
-
-            //Borrar el local de la base de datos.
-            DatabaseReference usersReference = FirebaseDatabase.getInstance().getReference("users");
-            usersReference.child(userList.get(position).userID).removeValue().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    notifyDataSetChanged();
-                }
-            });
-        });
-
         holder.itemView.setOnClickListener(v -> {
             context.startActivity(new Intent(context, UserDetailsActivity.class).putExtra("userNumber", position));
         });
@@ -80,8 +64,6 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
         TextView userEmailTextView;
         TextView userBalanceTextView;
         ImageView userImageView;
-        ImageButton deleteUserButton;
-        ImageButton editUserButton;
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -89,8 +71,6 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
             userEmailTextView = itemView.findViewById(R.id.user_email_textview);
             userImageView = itemView.findViewById(R.id.user_image_imageview);
             userBalanceTextView = itemView.findViewById(R.id.user_balance_textview);
-            deleteUserButton = itemView.findViewById(R.id.delete_user_button);
-            editUserButton = itemView.findViewById(R.id.edit_user_button);
         }
     }
 

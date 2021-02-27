@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.PracticaMercadoMunicipal" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#FF2A3C9F</item>
+        <item name="colorPrimary">#3F51B5</item>
         <item name="colorPrimaryVariant">#000000</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
