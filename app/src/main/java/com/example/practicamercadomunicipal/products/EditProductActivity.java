@@ -65,7 +65,7 @@ public class EditProductActivity extends AppCompatActivity {
     }
 
     private void setupViews() {
-        descTextView = findViewById(R.id.edit_product_name_textview);
+        descTextView = findViewById(R.id.edit_product_desc_textview);
         idTextView = findViewById(R.id.edit_product_id_textview);
         priceTextView = findViewById(R.id.edit_product_price_textview);
         imageView = findViewById(R.id.edit_product_image_imageview);
@@ -107,6 +107,7 @@ public class EditProductActivity extends AppCompatActivity {
 
         idTextView.setText(product.ID);
         descTextView.setText(product.desc);
+        priceTextView.setText(String.valueOf(product.price));
         Glide.with(this).load(product.image).centerCrop().into(imageView);
     }
 

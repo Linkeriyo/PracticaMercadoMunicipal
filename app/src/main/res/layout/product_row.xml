@@ -18,6 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="16dp"
@@ -30,8 +31,8 @@
                 android:id="@+id/product_name_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ProductName"
-                android:textSize="18sp" />
+                android:text="ProductDesc"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/product_id_textview"
@@ -72,6 +73,19 @@
             app:layout_constraintEnd_toStartOf="@+id/delete_product_button"
             app:layout_constraintTop_toTopOf="@+id/delete_product_button"
             app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/product_price_textview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="3000.0€"
+            android:textDirection="rtl"
+            app:layout_constraintBottom_toBottomOf="@+id/edit_product_button"
+            app:layout_constraintEnd_toStartOf="@+id/edit_product_button"
+            app:layout_constraintStart_toEndOf="@+id/linearLayout"
+            app:layout_constraintTop_toTopOf="@+id/edit_product_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

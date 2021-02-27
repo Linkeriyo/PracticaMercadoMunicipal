@@ -52,6 +52,9 @@ public class ProductsActivity extends AppCompatActivity{
             }
             return true;
         });
+        toolbar.setNavigationOnClickListener(v -> {
+            finish();
+        });
     }
 
     private void setupRecyclerView() {

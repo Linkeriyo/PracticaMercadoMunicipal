@@ -46,9 +46,10 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     @Override
     public void onBindViewHolder(@NonNull ProductsAdapter.ProductViewHolder holder, int position) {
         Product product = productList.get(position);
-        Glide.with(context).load(product.image).into(holder.productImageView);
+        Glide.with(context).load(product.image).centerCrop().into(holder.productImageView);
         holder.productNameTextView.setText(product.desc);
         holder.productIdTextView.setText(product.ID);
+        holder.productPriceTextView.setText(priceToString(product.price));
 
         holder.deleteProductButton.setOnClickListener(v -> {
             //Borrar la imagen de firebase.
@@ -86,6 +87,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 
         TextView productNameTextView;
         TextView productIdTextView;
+        TextView productPriceTextView;
         ImageView productImageView;
         ImageButton deleteProductButton;
         ImageButton editProductButton;
@@ -95,8 +97,17 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             productNameTextView = itemView.findViewById(R.id.product_name_textview);
             productIdTextView = itemView.findViewById(R.id.product_id_textview);
             productImageView = itemView.findViewById(R.id.product_image_imageview);
+            productPriceTextView = itemView.findViewById(R.id.product_price_textview);
             deleteProductButton = itemView.findViewById(R.id.delete_product_button);
             editProductButton = itemView.findViewById(R.id.edit_product_button);
         }
+    }
+
+    private static String priceToString(double price) {
+        String priceString = String.valueOf(price);
+        if (priceString.endsWith(".0")) {
+            priceString = priceString.substring(0, priceString.length() - 2);
+        }
+        return priceString + "€";
     }
 }
