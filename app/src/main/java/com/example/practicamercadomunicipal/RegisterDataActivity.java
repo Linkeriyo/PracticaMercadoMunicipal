@@ -75,7 +75,7 @@ public class RegisterDataActivity extends AppCompatActivity {
                     Intent nextActivityIntent = new Intent(getApplicationContext(), StoresActivity.class);
                     startActivity(nextActivityIntent);
                     finish();
-
+                }
             }
         });
     }
