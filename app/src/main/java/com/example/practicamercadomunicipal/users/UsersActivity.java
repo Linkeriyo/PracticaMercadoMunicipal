@@ -1,4 +1,4 @@
-package com.example.practicamercadomunicipal.stores;
+package com.example.practicamercadomunicipal.users;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -11,12 +11,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.practicamercadomunicipal.LoginActivity;
 import com.example.practicamercadomunicipal.R;
 import com.example.practicamercadomunicipal.data.AppData;
+import com.example.practicamercadomunicipal.models.User;
 import com.example.practicamercadomunicipal.models.Store;
-import com.example.practicamercadomunicipal.users.UsersActivity;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,15 +24,19 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StoresActivity extends AppCompatActivity{
+import static com.example.practicamercadomunicipal.data.AppData.userList;
+
+public class UsersActivity extends AppCompatActivity{
 
     RecyclerView recyclerView;
     Toolbar toolbar;
+    Store store;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_stores);
+        setContentView(R.layout.activity_users);
+        store = AppData.storeList.get(getIntent().getIntExtra("storeNumber", 0));;
         setupRecyclerView();
         setupToolBar();
         setupDatabaseListener();
@@ -42,57 +44,45 @@ public class StoresActivity extends AppCompatActivity{
 
     @SuppressLint("NonConstantResourceId")
     private void setupToolBar() {
-        toolbar = findViewById(R.id.stores_toolbar);
-        toolbar.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.add_store_option:
-                    startActivity(new Intent(this, NewStoreActivity.class));
-                    break;
-                case R.id.users_activity_option:
-                    startActivity(new Intent(this, UsersActivity.class));
-                    break;
-                case R.id.sign_out_option:
-                    FirebaseAuth.getInstance().signOut();
-                    startActivity(new Intent(this, LoginActivity.class));
-                    finish();
-                    break;
-            }
-            return true;
+        toolbar = findViewById(R.id.users_toolbar);
+        toolbar.setSubtitle(store.name);
+        toolbar.setNavigationOnClickListener(v -> {
+            finish();
         });
     }
 
     private void setupRecyclerView() {
-        recyclerView = findViewById(R.id.stores_recyclerview);
+        recyclerView = findViewById(R.id.users_recyclerview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new StoresAdapter(AppData.storeList, this));
-        if (AppData.storeList.isEmpty()) {
-            findViewById(R.id.no_stores_textview).setVisibility(View.VISIBLE);
+        recyclerView.setAdapter(new UsersAdapter(userList, this));
+        if (userList.isEmpty()) {
+            findViewById(R.id.no_users_textview).setVisibility(View.VISIBLE);
         }
         recyclerView.getAdapter().registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onChanged() {
                 super.onChanged();
-                if (!AppData.storeList.isEmpty()) {
-                    findViewById(R.id.no_stores_textview).setVisibility(View.INVISIBLE);
+                if (!userList.isEmpty()) {
+                    findViewById(R.id.no_users_textview).setVisibility(View.INVISIBLE);
                 } else {
-                    findViewById(R.id.no_stores_textview).setVisibility(View.VISIBLE);
+                    findViewById(R.id.no_users_textview).setVisibility(View.VISIBLE);
                 }
             }
         });
     }
 
     private void setupDatabaseListener() {
-        DatabaseReference storesReference = FirebaseDatabase.getInstance().getReference("stores");
-        storesReference.addValueEventListener(new ValueEventListener() {
+        DatabaseReference usersReference = FirebaseDatabase.getInstance().getReference("users");
+        usersReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                List<Store> stores = new ArrayList<>();
+                List<User> users = new ArrayList<>();
                 snapshot.getChildren().forEach(child -> {
-                      stores.add(child.getValue(Store.class));
+                      users.add(child.getValue(User.class));
                 });
-                AppData.storeList.clear();
-                AppData.storeList.addAll(stores);
+                userList.clear();
+                userList.addAll(users);
                 recyclerView.getAdapter().notifyDataSetChanged();
             }
 
@@ -101,5 +91,4 @@ public class StoresActivity extends AppCompatActivity{
             }
         });
     }
-
 }
