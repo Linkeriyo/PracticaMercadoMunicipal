@@ -17,7 +17,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.bumptech.glide.Glide;
 import com.example.practicamercadomunicipal.R;
 import com.example.practicamercadomunicipal.data.AppData;
-import com.example.practicamercadomunicipal.models.Store;
+import com.example.practicamercadomunicipal.models.User;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -31,16 +31,17 @@ public class UserDetailsActivity extends AppCompatActivity {
     FirebaseDatabase database;
     FirebaseStorage storage;
     Toolbar toolbar;
-    TextView nameTextView, idTextView;
+    TextView nameTextView, emailTextView;
     ImageView imageView;
     Uri imageUri, postImageUri;
     ProgressBar progressBar;
-    Store store;
+    User user;
+    private TextView balanceTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_store);
+        setContentView(R.layout.activity_user_details);
         setupFirebaseVariables();
         setupViews();
         setupToolbar();
@@ -53,27 +54,46 @@ public class UserDetailsActivity extends AppCompatActivity {
     }
 
     private void setupViews() {
-        nameTextView = findViewById(R.id.edit_store_name_textview);
-        idTextView = findViewById(R.id.edit_store_id_textview);
-        imageView = findViewById(R.id.edit_store_image_imageview);
+        nameTextView = findViewById(R.id.user_details_name_textview);
+        emailTextView = findViewById(R.id.user_details_email_textview);
+        balanceTextView = findViewById(R.id.user_details_balance_textview);
+        imageView = findViewById(R.id.user_details_image_imageview);
         imageView.setOnClickListener(v -> {
             Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
             startActivityForResult(galleryIntent, PICK_IMAGE);
         });
-        progressBar = findViewById(R.id.edit_store_progressbar);
+        progressBar = findViewById(R.id.user_details_progressbar);
     }
 
     private void setupToolbar() {
-        toolbar = findViewById(R.id.edit_store_toolbar);
+        toolbar = findViewById(R.id.user_details_toolbar);
         toolbar.setNavigationOnClickListener(v -> finish());
         toolbar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.edit_store_confirm_option && isStoreOk()) {
+            if (item.getItemId() == R.id.user_confirm_option && isUserOk()) {
                 if (postImageUri == null) {
                     postImageUri = Uri.EMPTY;
                 }
-                Store store = new Store(idTextView.getText().toString(), nameTextView.getText().toString(), imageUri, postImageUri);
-                DatabaseReference storesReference = FirebaseDatabase.getInstance().getReference("stores");
-                storesReference.child(idTextView.getText().toString()).setValue(store)
+                double balance = user.balance;
+                try {
+                    balance = Double.parseDouble(balanceTextView.getText().toString());
+                } catch (NumberFormatException exception) {
+                    Toast.makeText(this,
+                            "El balance no es válido, no se ha cambiado.",
+                            Toast.LENGTH_SHORT
+                    ).show();
+                }
+                User newUser = new User(
+                        user.admin,
+                        user.userID,
+                        nameTextView.getText().toString(),
+                        imageUri,
+                        postImageUri,
+                        user.email,
+                        user.invoices,
+                        balance
+                );
+                DatabaseReference usersReference = FirebaseDatabase.getInstance().getReference("users");
+                usersReference.child(emailTextView.getText().toString()).setValue(newUser)
                         .addOnCompleteListener(task -> finish());
             } else {
                 Toast.makeText(this,
@@ -86,12 +106,14 @@ public class UserDetailsActivity extends AppCompatActivity {
     }
 
     private void putValues() {
-        int storeNumber = getIntent().getIntExtra("storeNumber", 0);
-        store = AppData.storeList.get(storeNumber);
+        int userNumber = getIntent().getIntExtra("userNumber", 0);
+        user = AppData.userList.get(userNumber);
 
-        idTextView.setText(store.ID);
-        nameTextView.setText(store.name);
-        Glide.with(this).load(store.image).centerCrop().into(imageView);
+        emailTextView.setText(user.email);
+        nameTextView.setText(user.name);
+        balanceTextView.setText(balanceToString(user.balance));
+
+        Glide.with(this).load(user.image).centerCrop().into(imageView);
     }
 
     @Override
@@ -130,8 +152,16 @@ public class UserDetailsActivity extends AppCompatActivity {
         progressBar.setVisibility(View.INVISIBLE);
     }
 
-    private boolean isStoreOk() {
+    private boolean isUserOk() {
         return (!nameTextView.getText().toString().isEmpty()
-                && !idTextView.getText().toString().isEmpty());
+                && !emailTextView.getText().toString().isEmpty());
+    }
+
+    private static String balanceToString(double balance) {
+        String balanceString = String.valueOf(balance);
+        if (balanceString.endsWith(".0")) {
+            balanceString = balanceString.substring(0, balanceString.length() - 2);
+        }
+        return balanceString + "€";
     }
 }

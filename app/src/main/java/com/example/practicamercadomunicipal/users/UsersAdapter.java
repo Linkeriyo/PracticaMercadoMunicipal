@@ -65,7 +65,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
         });
 
         holder.itemView.setOnClickListener(v -> {
-            context.startActivity(new Intent(context, UsersActivity.class).putExtra("userNumber", position));
+            context.startActivity(new Intent(context, UserDetailsActivity.class).putExtra("userNumber", position));
         });
     }
 
