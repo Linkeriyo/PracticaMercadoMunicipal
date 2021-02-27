@@ -62,21 +62,18 @@ public class RegisterDataActivity extends AppCompatActivity {
             startActivityForResult(galleryIntent, PICK_IMAGE);
         });
 
-        create.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (name.getText().toString().isEmpty() || saldo.getText().toString().isEmpty()) {
-                    Toast empty = Toast.makeText(getApplicationContext(), "Dejaste algun campo en blanco", Toast.LENGTH_SHORT);
-                    empty.show();
-                } else {
-                    final FirebaseAuth auth = FirebaseAuth.getInstance();
+        create.setOnClickListener(v -> {
+            if (name.getText().toString().isEmpty() || saldo.getText().toString().isEmpty()) {
+                Toast empty = Toast.makeText(getApplicationContext(), "Dejaste algun campo en blanco", Toast.LENGTH_SHORT);
+                empty.show();
+            } else {
+                final FirebaseAuth auth = FirebaseAuth.getInstance();
 
-                    newUser(true, auth.getCurrentUser().getUid(), name.getText().toString(), imageUri, getIntent().getStringExtra("email"), invoiceList, Double.parseDouble(saldo.getText().toString()));
-                    Intent nextActivityIntent = new Intent(getApplicationContext(), StoresActivity.class);
-                    startActivity(nextActivityIntent);
-                    finish();
+                newUser(true, auth.getCurrentUser().getUid(), name.getText().toString(), imageUri, getIntent().getStringExtra("email"), invoiceList, Double.parseDouble(saldo.getText().toString()));
+                Intent nextActivityIntent = new Intent(getApplicationContext(), StoresActivity.class);
+                startActivity(nextActivityIntent);
+                finish();
 
-                }
             }
         });
     }

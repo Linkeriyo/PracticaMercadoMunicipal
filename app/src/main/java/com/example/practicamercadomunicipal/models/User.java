@@ -9,6 +9,10 @@ public class User {
     public List<Invoice> invoice;
     public double balance;
 
+    public User() {
+
+    }
+
     public User(boolean admin, String userID, String name, String image, String email, List<Invoice> invoice, double balance) {
         this.admin = admin;
         this.userID = userID;
