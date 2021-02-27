@@ -112,12 +112,12 @@ public class LoginActivity extends AppCompatActivity {
                 assert account != null;
                 Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
                 firebaseAuthWithGoogle(account.getIdToken());
-                Thread.sleep(3000);
                 Toast.makeText(
                         this,
                         "Se ha iniciado sesión satisfactoriamente.",
                         Toast.LENGTH_SHORT
                 ).show();
+                Thread.sleep(3000);
                 AuthNullUser();
 
             } catch (ApiException e) {
