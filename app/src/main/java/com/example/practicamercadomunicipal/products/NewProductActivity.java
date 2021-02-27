@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
+
 import com.example.practicamercadomunicipal.R;
 import com.example.practicamercadomunicipal.models.Product;
 import com.google.firebase.database.DatabaseReference;
@@ -30,7 +31,7 @@ public class NewProductActivity extends AppCompatActivity {
     FirebaseDatabase database;
     FirebaseStorage storage;
     Toolbar toolbar;
-    TextView descTextView, idTextView, priceTextView;
+    TextView descTextView, idTextView, priceTextView, stockTextView;
     ImageView imageView;
     Uri imageUri, postImageUri;
     ProgressBar progressBar;
@@ -54,6 +55,7 @@ public class NewProductActivity extends AppCompatActivity {
 
     private void setupViews() {
         descTextView = findViewById(R.id.new_product_desc_textview);
+        stockTextView = findViewById(R.id.new_product_stock_textview);
         idTextView = findViewById(R.id.new_product_id_textview);
         priceTextView = findViewById(R.id.new_product_price_textview);
         imageView = findViewById(R.id.new_product_image_imageview);
@@ -75,7 +77,8 @@ public class NewProductActivity extends AppCompatActivity {
                 String id = idTextView.getText().toString();
                 String desc = descTextView.getText().toString();
                 double price = Double.parseDouble(priceTextView.getText().toString());
-                Product product = new Product(storeID, id, desc, price, imageUri, postImageUri);
+                int stock = Integer.parseInt(stockTextView.getText().toString());
+                Product product = new Product(storeID, id, desc, price, imageUri, postImageUri, stock);
                 DatabaseReference productsReference = FirebaseDatabase.getInstance().getReference("products");
                 productsReference.child(idTextView.getText().toString()).setValue(product)
                         .addOnCompleteListener(task -> finish());

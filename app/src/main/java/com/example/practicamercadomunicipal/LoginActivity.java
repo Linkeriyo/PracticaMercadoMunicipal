@@ -117,7 +117,7 @@ public class LoginActivity extends AppCompatActivity {
                         "Se ha iniciado sesión satisfactoriamente.",
                         Toast.LENGTH_SHORT
                 ).show();
-                Thread.sleep(3000);
+                Thread.sleep(2000);
                 AuthNullUser();
 
             } catch (ApiException e) {

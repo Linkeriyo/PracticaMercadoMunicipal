@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+
 import com.example.practicamercadomunicipal.R;
 import com.example.practicamercadomunicipal.models.Product;
 import com.example.practicamercadomunicipal.models.Store;
@@ -38,18 +39,19 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 
     @NonNull
     @Override
-    public ProductsAdapter.ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.product_row, parent, false);
         return new ProductViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProductsAdapter.ProductViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product product = productList.get(position);
         Glide.with(context).load(product.image).centerCrop().into(holder.productImageView);
         holder.productNameTextView.setText(product.desc);
         holder.productIdTextView.setText(product.ID);
         holder.productPriceTextView.setText(priceToString(product.price));
+        holder.productStockTextView.setText(stockToString(product.stock));
 
         holder.deleteProductButton.setOnClickListener(v -> {
             //Borrar la imagen de firebase.
@@ -82,6 +84,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     public static class ProductViewHolder extends RecyclerView.ViewHolder{
 
         TextView productNameTextView;
+        TextView productStockTextView;
         TextView productIdTextView;
         TextView productPriceTextView;
         ImageView productImageView;
@@ -91,6 +94,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
             productNameTextView = itemView.findViewById(R.id.product_name_textview);
+            productStockTextView = itemView.findViewById(R.id.product_stock_textview);
             productIdTextView = itemView.findViewById(R.id.product_id_textview);
             productImageView = itemView.findViewById(R.id.product_image_imageview);
             productPriceTextView = itemView.findViewById(R.id.product_price_textview);
@@ -105,5 +109,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             priceString = priceString.substring(0, priceString.length() - 2);
         }
         return priceString + "€";
+    }
+
+    private static String stockToString(int stock) {
+        String stockString = String.valueOf(stock);
+
+        return "Stock " + stockString;
     }
 }
