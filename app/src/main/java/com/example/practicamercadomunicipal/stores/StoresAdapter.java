@@ -45,7 +45,7 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.StoreViewH
     @Override
     public void onBindViewHolder(@NonNull StoresAdapter.StoreViewHolder holder, int position) {
         Store store = storeList.get(position);
-        Glide.with(context).load(store.image).into(holder.storeImageView);
+        Glide.with(context).load(store.image).centerCrop().into(holder.storeImageView);
         holder.storeNameTextView.setText(store.name);
         holder.storeIdTextView.setText(store.ID);
 

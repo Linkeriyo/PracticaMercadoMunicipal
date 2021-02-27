@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.practicamercadomunicipal.data.AppData;
 import com.example.practicamercadomunicipal.models.Store;
+import com.example.practicamercadomunicipal.models.User;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,7 +25,7 @@ public class SplashActivity extends AppCompatActivity {
     private final static String TAG = "SplashActivity";
 
     protected Context context = this;
-    boolean storesLoaded = false;
+    boolean storesLoaded = false, usersLoaded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +56,33 @@ public class SplashActivity extends AppCompatActivity {
                 error.toException().printStackTrace();
             }
         });
+
+        DatabaseReference usersReference = FirebaseDatabase.getInstance().getReference("users");
+        usersReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<User> users = new ArrayList<>();
+                snapshot.getChildren().forEach(child -> {
+                    User user = child.getValue(User.class);
+                    if (user != null) {
+                        users.add(user);
+                    }
+                });
+                AppData.userList = users;
+                usersLoaded = true;
+                tryNextActivity();
+                usersReference.removeEventListener(this);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                error.toException().printStackTrace();
+            }
+        });
     }
 
     private void tryNextActivity() {
-        if (storesLoaded) {
+        if (storesLoaded && usersLoaded) {
             startActivity(new Intent(context, LoginActivity.class));
             finish();
         }

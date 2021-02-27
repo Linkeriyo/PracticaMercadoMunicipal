@@ -15,6 +15,7 @@ import com.example.practicamercadomunicipal.LoginActivity;
 import com.example.practicamercadomunicipal.R;
 import com.example.practicamercadomunicipal.data.AppData;
 import com.example.practicamercadomunicipal.models.Store;
+import com.example.practicamercadomunicipal.users.UsersActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -46,6 +47,9 @@ public class StoresActivity extends AppCompatActivity{
             switch (item.getItemId()) {
                 case R.id.add_store_option:
                     startActivity(new Intent(this, NewStoreActivity.class));
+                    break;
+                case R.id.users_activity_option:
+                    startActivity(new Intent(this, UsersActivity.class));
                     break;
                 case R.id.sign_out_option:
                     FirebaseAuth.getInstance().signOut();

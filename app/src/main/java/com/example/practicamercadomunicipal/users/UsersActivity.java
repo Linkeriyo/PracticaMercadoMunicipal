@@ -1,4 +1,4 @@
-package com.example.practicamercadomunicipal.products;
+package com.example.practicamercadomunicipal.users;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.practicamercadomunicipal.R;
 import com.example.practicamercadomunicipal.data.AppData;
-import com.example.practicamercadomunicipal.models.Product;
+import com.example.practicamercadomunicipal.models.User;
 import com.example.practicamercadomunicipal.models.Store;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,19 +24,19 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductsActivity extends AppCompatActivity{
+import static com.example.practicamercadomunicipal.data.AppData.userList;
+
+public class UsersActivity extends AppCompatActivity{
 
     RecyclerView recyclerView;
     Toolbar toolbar;
-    List<Product> productList;
     Store store;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_products);
-        store = AppData.storeList.get(getIntent().getIntExtra("storeNumber", 0));
-        setupProductList();
+        setContentView(R.layout.activity_users);
+        store = AppData.storeList.get(getIntent().getIntExtra("storeNumber", 0));;
         setupRecyclerView();
         setupToolBar();
         setupDatabaseListener();
@@ -44,51 +44,45 @@ public class ProductsActivity extends AppCompatActivity{
 
     @SuppressLint("NonConstantResourceId")
     private void setupToolBar() {
-        toolbar = findViewById(R.id.products_toolbar);
+        toolbar = findViewById(R.id.users_toolbar);
         toolbar.setSubtitle(store.name);
-        toolbar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.add_product_option) {
-                startActivity(new Intent(this, NewProductActivity.class));
-            }
-            return true;
-        });
         toolbar.setNavigationOnClickListener(v -> {
             finish();
         });
     }
 
     private void setupRecyclerView() {
-        recyclerView = findViewById(R.id.products_recyclerview);
+        recyclerView = findViewById(R.id.users_recyclerview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new ProductsAdapter(productList, this, store));
-        if (productList.isEmpty()) {
-            findViewById(R.id.no_products_textview).setVisibility(View.VISIBLE);
+        recyclerView.setAdapter(new UsersAdapter(userList, this));
+        if (userList.isEmpty()) {
+            findViewById(R.id.no_users_textview).setVisibility(View.VISIBLE);
         }
         recyclerView.getAdapter().registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onChanged() {
                 super.onChanged();
-                if (!productList.isEmpty()) {
-                    findViewById(R.id.no_products_textview).setVisibility(View.INVISIBLE);
+                if (!userList.isEmpty()) {
+                    findViewById(R.id.no_users_textview).setVisibility(View.INVISIBLE);
                 } else {
-                    findViewById(R.id.no_products_textview).setVisibility(View.VISIBLE);
+                    findViewById(R.id.no_users_textview).setVisibility(View.VISIBLE);
                 }
             }
         });
     }
 
     private void setupDatabaseListener() {
-        DatabaseReference productsReference = FirebaseDatabase.getInstance().getReference("products");
-        productsReference.addValueEventListener(new ValueEventListener() {
+        DatabaseReference usersReference = FirebaseDatabase.getInstance().getReference("users");
+        usersReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                List<Product> products = new ArrayList<>();
+                List<User> users = new ArrayList<>();
                 snapshot.getChildren().forEach(child -> {
-                      products.add(child.getValue(Product.class));
+                      users.add(child.getValue(User.class));
                 });
-                productList.clear();
-                productList.addAll(products);
+                userList.clear();
+                userList.addAll(users);
                 recyclerView.getAdapter().notifyDataSetChanged();
             }
 
@@ -97,13 +91,4 @@ public class ProductsActivity extends AppCompatActivity{
             }
         });
     }
-
-    private void setupProductList() {
-        if (store.products != null) {
-            productList = store.products;
-        } else {
-            productList = new ArrayList<>();
-        }
-    }
-
 }

@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class RegisterDataActivity extends AppCompatActivity {
-    String imageUri = "";
+    String imageUri = "", imgStorage = "";
     ImageView imageView;
     private static final int PICK_IMAGE = 1;
     FirebaseStorage storage;
@@ -62,24 +62,26 @@ public class RegisterDataActivity extends AppCompatActivity {
             startActivityForResult(galleryIntent, PICK_IMAGE);
         });
 
-        create.setOnClickListener(v -> {
-            if (name.getText().toString().isEmpty() || saldo.getText().toString().isEmpty()) {
-                Toast empty = Toast.makeText(getApplicationContext(), "Dejaste algun campo en blanco", Toast.LENGTH_SHORT);
-                empty.show();
-            } else {
-                final FirebaseAuth auth = FirebaseAuth.getInstance();
+        create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (name.getText().toString().isEmpty() || saldo.getText().toString().isEmpty()) {
+                    Toast empty = Toast.makeText(getApplicationContext(), "Dejaste algun campo en blanco", Toast.LENGTH_SHORT);
+                    empty.show();
+                } else {
+                    final FirebaseAuth auth = FirebaseAuth.getInstance();
 
-                newUser(true, auth.getCurrentUser().getUid(), name.getText().toString(), imageUri, getIntent().getStringExtra("email"), invoiceList, Double.parseDouble(saldo.getText().toString()));
-                Intent nextActivityIntent = new Intent(getApplicationContext(), StoresActivity.class);
-                startActivity(nextActivityIntent);
-                finish();
+                    newUser(true, auth.getCurrentUser().getUid(), name.getText().toString(), imageUri, imgStorage, getIntent().getStringExtra("email"), invoiceList, Double.parseDouble(saldo.getText().toString()));
+                    Intent nextActivityIntent = new Intent(getApplicationContext(), StoresActivity.class);
+                    startActivity(nextActivityIntent);
+                    finish();
 
             }
         });
     }
 
-    public void newUser(boolean admin, String id, String name, String image, String email, List<Invoice> invoiceList, Double saldo) {
-        User user = new User(admin, id, name, image, email, invoiceList, saldo);
+    public void newUser(boolean admin, String id, String name, String image, String imgStorage, String email, List<Invoice> invoiceList, Double saldo) {
+        User user = new User(admin, id, name, image, imgStorage, email, invoiceList, saldo);
 
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("users").child(id).setValue(user);
@@ -98,6 +100,7 @@ public class RegisterDataActivity extends AppCompatActivity {
         if (requestCode == PICK_IMAGE) {
             assert data != null;
             Uri uri = data.getData();
+            imgStorage = uri.toString();
             StorageReference fileReference = storage.getReference("images").child(uri.getLastPathSegment());
             fileReference.putFile(uri).continueWithTask(task -> {
                 if (!task.isSuccessful()) {
