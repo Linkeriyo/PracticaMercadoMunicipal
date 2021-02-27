@@ -30,8 +30,12 @@ public class User {
         this.admin = admin;
         this.userID = userID;
         this.name = name;
-        this.image = image.toString();
-        this.imgStorage = imgStorage.toString();
+        if (image != null) {
+            this.image = image.toString();
+        }
+        if (imgStorage != null) {
+            this.imgStorage = imgStorage.toString();
+        }
         this.email = email;
         this.invoices = invoices;
         this.balance = balance;

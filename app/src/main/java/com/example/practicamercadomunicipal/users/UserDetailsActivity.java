@@ -1,5 +1,6 @@
 package com.example.practicamercadomunicipal.users;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -42,6 +44,10 @@ public class UserDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_details);
+
+        int userNumber = getIntent().getIntExtra("userNumber", 0);
+        user = AppData.userList.get(userNumber);
+
         setupFirebaseVariables();
         setupViews();
         setupToolbar();
@@ -67,53 +73,76 @@ public class UserDetailsActivity extends AppCompatActivity {
 
     private void setupToolbar() {
         toolbar = findViewById(R.id.user_details_toolbar);
+        toolbar.setSubtitle(user.email);
         toolbar.setNavigationOnClickListener(v -> finish());
         toolbar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.user_confirm_option && isUserOk()) {
-                if (postImageUri == null) {
-                    postImageUri = Uri.EMPTY;
-                }
-                double balance = user.balance;
-                try {
-                    balance = Double.parseDouble(balanceTextView.getText().toString());
-                } catch (NumberFormatException exception) {
+            if (item.getItemId() == R.id.user_confirm_option) {
+                if (isUserOk()) {
+                    if (postImageUri == null) {
+                        postImageUri = Uri.EMPTY;
+                    }
+                    double balance = user.balance;
+                    try {
+                        String balanceString = balanceTextView.getText().toString();
+                        if (balanceString.endsWith("€")) {
+                            balanceString = balanceString.substring(0, balanceString.length() - 1);
+                        }
+                        balance = Double.parseDouble(balanceString);
+                    } catch (NumberFormatException exception) {
+                        Toast.makeText(this,
+                                "El balance no es válido, no se ha cambiado.",
+                                Toast.LENGTH_SHORT
+                        ).show();
+                    }
+                    User newUser = new User(
+                            user.admin,
+                            user.userID,
+                            nameTextView.getText().toString(),
+                            imageUri,
+                            postImageUri,
+                            user.email,
+                            user.invoices,
+                            balance
+                    );
+                    DatabaseReference usersReference = FirebaseDatabase.getInstance().getReference("users");
+                    usersReference.child(user.userID).setValue(newUser)
+                            .addOnCompleteListener(task -> finish());
+
+
+                } else {
                     Toast.makeText(this,
-                            "El balance no es válido, no se ha cambiado.",
+                            "Los campos no deben estar vacíos",
                             Toast.LENGTH_SHORT
                     ).show();
                 }
-                User newUser = new User(
-                        user.admin,
-                        user.userID,
-                        nameTextView.getText().toString(),
-                        imageUri,
-                        postImageUri,
-                        user.email,
-                        user.invoices,
-                        balance
-                );
-                DatabaseReference usersReference = FirebaseDatabase.getInstance().getReference("users");
-                usersReference.child(emailTextView.getText().toString()).setValue(newUser)
-                        .addOnCompleteListener(task -> finish());
-            } else {
-                Toast.makeText(this,
-                        "Los campos no deben estar vacíos",
-                        Toast.LENGTH_SHORT
-                ).show();
+            } else if (item.getItemId() == R.id.remove_user_option) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("¿Seguro que quieres eliminar el usuario? Los datos no se podrán recuperar.")
+                        .setPositiveButton("Sí", (dialog, which) -> {
+                            DatabaseReference usersReference = FirebaseDatabase.getInstance().getReference("users");
+                            usersReference.child(user.userID).removeValue();
+
+                            if (user.imgStorage != null) {
+                                StorageReference imagesReference = FirebaseStorage.getInstance().getReference("images");
+                                imagesReference.child(user.imgStorage).delete();
+                            }
+                            finish();
+                        })
+                        .setNegativeButton("No", (dialog, which) -> {});
+                builder.create().show();
             }
             return true;
         });
     }
 
     private void putValues() {
-        int userNumber = getIntent().getIntExtra("userNumber", 0);
-        user = AppData.userList.get(userNumber);
-
         emailTextView.setText(user.email);
         nameTextView.setText(user.name);
         balanceTextView.setText(balanceToString(user.balance));
 
-        Glide.with(this).load(user.image).centerCrop().into(imageView);
+        if (user.image != null) {
+            Glide.with(this).load(user.image).centerCrop().into(imageView);
+        }
     }
 
     @Override

@@ -30,13 +30,11 @@ public class UsersActivity extends AppCompatActivity{
 
     RecyclerView recyclerView;
     Toolbar toolbar;
-    Store store;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users);
-        store = AppData.storeList.get(getIntent().getIntExtra("storeNumber", 0));;
         setupRecyclerView();
         setupToolBar();
         setupDatabaseListener();
@@ -45,7 +43,6 @@ public class UsersActivity extends AppCompatActivity{
     @SuppressLint("NonConstantResourceId")
     private void setupToolBar() {
         toolbar = findViewById(R.id.users_toolbar);
-        toolbar.setSubtitle(store.name);
         toolbar.setNavigationOnClickListener(v -> {
             finish();
         });
