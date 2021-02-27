@@ -40,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     GoogleSignInOptions gSignInOptions;
     GoogleSignInClient gSignInClient;
     FirebaseAuth auth = FirebaseAuth.getInstance();
+    EditText emailSign, passwordSign;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +60,8 @@ public class LoginActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
 
-        final EditText emailSign = findViewById(R.id.editTextEmailAddressLogin);
-        final EditText passwordSign = findViewById(R.id.editTextPasswordLogin);
+        emailSign = findViewById(R.id.editTextEmailAddressLogin);
+        passwordSign = findViewById(R.id.editTextPasswordLogin);
         final TextView create = findViewById((R.id.textViewRegister));
         Button login = findViewById(R.id.buttonLoginEmail);
         TextView google = findViewById(R.id.textViewLoginGoogle);
@@ -90,7 +91,6 @@ public class LoginActivity extends AppCompatActivity {
             gSignInClient = GoogleSignIn.getClient(this, gSignInOptions);
             startActivityForResult(gSignInClient.getSignInIntent(), RC_SIGN_IN);
         });
-
 
 
         create.setOnClickListener(v -> {
@@ -152,25 +152,42 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 AtomicReference<Boolean> exist = new AtomicReference<>(false);
+                AtomicReference<Boolean> adminEs = new AtomicReference<>(false);
                 snapshot.getChildren().forEach(child -> {
                     if (child.getValue(User.class).userID.equals(auth.getCurrentUser().getUid())) {
                         exist.set(true);
-
+                        if (child.getValue(User.class).admin) {
+                            adminEs.set(true);
+                        }
                     }
                 });
                 if (exist.get()) {
-                    Intent nextActivityIntent = new Intent(getApplicationContext(), StoresActivity.class);
-                    startActivity(nextActivityIntent);
-                    finish();
+                    esAdmin(adminEs.get());
                 } else {
                     Intent nextActivityIntent = new Intent(getApplicationContext(), RegisterDataActivity.class).putExtra("email", currentUser.getEmail());
                     startActivity(nextActivityIntent);
                     finish();
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
+    }
+
+    public void esAdmin(boolean adminEs) {
+        if (adminEs) {
+            Intent nextActivityIntent = new Intent(getApplicationContext(), StoresActivity.class);
+            startActivity(nextActivityIntent);
+            finish();
+        } else {
+            auth.signOut();
+            Toast.makeText(
+                    this,
+                    "No tienes permisos de administrador",
+                    Toast.LENGTH_SHORT
+            ).show();
+        }
     }
 }
