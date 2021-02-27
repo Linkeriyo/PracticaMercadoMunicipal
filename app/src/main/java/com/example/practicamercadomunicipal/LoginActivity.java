@@ -89,7 +89,6 @@ public class LoginActivity extends AppCompatActivity {
         google.setOnClickListener(v -> {
             gSignInClient = GoogleSignIn.getClient(this, gSignInOptions);
             startActivityForResult(gSignInClient.getSignInIntent(), RC_SIGN_IN);
-            AuthNullUser();
         });
 
 
