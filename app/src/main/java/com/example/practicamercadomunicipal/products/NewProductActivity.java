@@ -16,14 +16,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
-
 import com.example.practicamercadomunicipal.R;
+import com.example.practicamercadomunicipal.data.AppData;
 import com.example.practicamercadomunicipal.models.Product;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.List;
 import java.util.Objects;
 
 public class NewProductActivity extends AppCompatActivity {
@@ -38,13 +39,14 @@ public class NewProductActivity extends AppCompatActivity {
     Uri imageUri, postImageUri;
     ProgressBar progressBar;
     String storeID;
+    List<Product> productList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_product);
         storeID = getIntent().getStringExtra("storeID");
-        storeID = getIntent().getStringExtra("storeID");
+        productList = AppData.getStoreById(storeID).products;
         setupFirebaseVariables();
         setupViews();
         setupToolbar();
@@ -83,9 +85,10 @@ public class NewProductActivity extends AppCompatActivity {
                 double stock = Double.parseDouble(stockTextView.getText().toString());
                 boolean kgUnit = kgSwitch.isChecked();
                 Product product = new Product(storeID, id, desc, price, imageUri, postImageUri, stock, kgUnit);
-                DatabaseReference productsReference = FirebaseDatabase.getInstance().getReference("products");
-                productsReference.child(idTextView.getText().toString()).setValue(product)
-                        .addOnCompleteListener(task -> finish());
+                productList.add(product);
+                DatabaseReference storeReference = database.getReference("stores").child(storeID);
+                storeReference.setValue(AppData.getStoreById(storeID));
+                finish();
             } else {
                 Toast.makeText(this,
                         "Los campos no deben estar vacíos",

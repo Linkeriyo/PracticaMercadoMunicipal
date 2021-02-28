@@ -11,7 +11,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.example.practicamercadomunicipal.R;
 import com.example.practicamercadomunicipal.data.AppData;
 import com.example.practicamercadomunicipal.models.Product;
@@ -37,6 +36,7 @@ public class ProductsActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_products);
         store = AppData.storeList.get(getIntent().getIntExtra("storeNumber", 0));
+        System.out.println(store.name);
         setupProductList();
         setupRecyclerView();
         setupToolBar();
@@ -49,7 +49,7 @@ public class ProductsActivity extends AppCompatActivity{
         toolbar.setSubtitle(store.name);
         toolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.add_product_option) {
-                startActivity(new Intent(this, NewProductActivity.class).putExtra("storeID", store.ID));
+                startActivity(new Intent(this, com.example.practicamercadomunicipal.products.NewProductActivity.class).putExtra("storeID", store.ID));
             }
             return true;
         });
@@ -80,16 +80,14 @@ public class ProductsActivity extends AppCompatActivity{
     }
 
     private void setupDatabaseListener() {
-        DatabaseReference productsReference = FirebaseDatabase.getInstance().getReference("products");
+        DatabaseReference productsReference = FirebaseDatabase.getInstance()
+                .getReference("stores")
+                .child(store.ID)
+                .child("products");
         productsReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                List<Product> products = new ArrayList<>();
-                snapshot.getChildren().forEach(child -> {
-                      products.add(child.getValue(Product.class));
-                });
-                productList.clear();
-                productList.addAll(products);
+                setupProductList();
                 recyclerView.getAdapter().notifyDataSetChanged();
             }
 

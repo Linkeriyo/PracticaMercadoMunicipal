@@ -15,8 +15,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-
 import com.example.practicamercadomunicipal.R;
+import com.example.practicamercadomunicipal.data.AppData;
 import com.example.practicamercadomunicipal.models.Product;
 import com.example.practicamercadomunicipal.models.Store;
 import com.google.firebase.database.DatabaseReference;
@@ -52,11 +52,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         holder.productNameTextView.setText(product.desc);
         holder.productIdTextView.setText(product.ID);
         holder.productPriceTextView.setText(priceToString(product.price));
-        if (product.kgUnit) {
-            holder.productStockTextView.setText(weightToString(product.stock));
-        } else {
-            holder.productStockTextView.setText(stockToString(product.stock));
-        }
+        holder.productStockTextView.setText(stockToString(product.stock));
 
         holder.deleteProductButton.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -64,23 +60,24 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
                     .setPositiveButton("Sí", (dialog, which) -> {
                         //Borrar la imagen de firebase.
                         Uri storageUri = Uri.parse(productList.get(position).imgStorage);
-                        StorageReference imagesReference = FirebaseStorage.getInstance().getReference("images");
-                        imagesReference.child(storageUri.getLastPathSegment()).delete();
+                        if (storageUri != null && !storageUri.equals(Uri.EMPTY)) {
+                            StorageReference imagesReference = FirebaseStorage.getInstance().getReference("images");
+                            imagesReference.child(storageUri.getLastPathSegment()).delete();
+                        }
 
-                        //Borrar el local de la base de datos.
-                        DatabaseReference productsReference = FirebaseDatabase.getInstance().getReference("products");
-                        productsReference.child(productList.get(position).ID).removeValue().addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                notifyDataSetChanged();
-                            }
-                        });
+                        //Borrar el producto de la base de datos.
+                        productList.remove(product);
+                        DatabaseReference storeReference = FirebaseDatabase.getInstance()
+                                .getReference("stores")
+                                .child(store.ID);
+                        storeReference.setValue(AppData.getStoreById(store.ID));
                     })
                     .setNegativeButton("No", (dialog, which) -> {});
             builder.create().show();
         });
 
         holder.editProductButton.setOnClickListener(v -> {
-            context.startActivity(new Intent(context, EditProductActivity.class)
+            context.startActivity(new Intent(context, com.example.practicamercadomunicipal.products.EditProductActivity.class)
                     .putExtra("productNumber", position)
                     .putExtra("storeID", store.ID)
             );
@@ -129,7 +126,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         }
         return stockString + "uds";
     }
-    
+
     private static String weightToString(double weight) {
         String weightString = String.valueOf(weight);
         if (weightString.endsWith(".0")) {

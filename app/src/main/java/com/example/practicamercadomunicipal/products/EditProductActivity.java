@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
-
 import com.example.practicamercadomunicipal.R;
 import com.example.practicamercadomunicipal.data.AppData;
 import com.example.practicamercadomunicipal.models.Product;
@@ -95,9 +94,9 @@ public class EditProductActivity extends AppCompatActivity {
                 double stock = Double.parseDouble(stockTextView.getText().toString());
                 boolean kgUnit = kgSwitch.isChecked();
                 Product product = new Product(storeID, id, desc, price, imageUri, postImageUri, stock, kgUnit);
-                DatabaseReference productsReference = FirebaseDatabase.getInstance().getReference("products");
-                productsReference.child(idTextView.getText().toString()).setValue(product)
-                        .addOnCompleteListener(task -> finish());
+                productList.add(product);
+                DatabaseReference storeReference = database.getReference("stores").child(storeID);
+                storeReference.setValue(AppData.getStoreById(storeID));
             } else {
                 Toast.makeText(this,
                         "Los campos no deben estar vacíos",
