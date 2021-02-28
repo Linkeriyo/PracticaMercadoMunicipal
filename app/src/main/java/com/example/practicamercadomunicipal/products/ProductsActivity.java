@@ -49,7 +49,7 @@ public class ProductsActivity extends AppCompatActivity{
         toolbar.setSubtitle(store.name);
         toolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.add_product_option) {
-                startActivity(new Intent(this, NewProductActivity.class));
+                startActivity(new Intent(this, NewProductActivity.class).putExtra("storeID", store.ID));
             }
             return true;
         });
