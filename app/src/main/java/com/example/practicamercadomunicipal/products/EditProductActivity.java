@@ -7,6 +7,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +41,7 @@ public class EditProductActivity extends AppCompatActivity {
     Product product;
     String storeID;
     List<Product> productList;
+    Switch kgSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +78,7 @@ public class EditProductActivity extends AppCompatActivity {
             startActivityForResult(galleryIntent, PICK_IMAGE);
         });
         progressBar = findViewById(R.id.edit_product_progressbar);
+        kgSwitch = findViewById(R.id.edit_product_switch);
     }
 
     private void setupToolbar() {
@@ -89,8 +92,9 @@ public class EditProductActivity extends AppCompatActivity {
                 String id = idTextView.getText().toString();
                 String desc = descTextView.getText().toString();
                 double price = Double.parseDouble(priceTextView.getText().toString());
-                int stock = Integer.parseInt(stockTextView.getText().toString());
-                Product product = new Product(storeID, id, desc, price, imageUri, postImageUri, stock);
+                double stock = Double.parseDouble(stockTextView.getText().toString());
+                boolean kgUnit = kgSwitch.isChecked();
+                Product product = new Product(storeID, id, desc, price, imageUri, postImageUri, stock, kgUnit);
                 DatabaseReference productsReference = FirebaseDatabase.getInstance().getReference("products");
                 productsReference.child(idTextView.getText().toString()).setValue(product)
                         .addOnCompleteListener(task -> finish());
@@ -113,6 +117,7 @@ public class EditProductActivity extends AppCompatActivity {
         priceTextView.setText(String.valueOf(product.price));
         stockTextView.setText(String.valueOf(product.stock));
         Glide.with(this).load(product.image).centerCrop().into(imageView);
+        kgSwitch.setChecked(product.kgUnit);
     }
 
     @Override

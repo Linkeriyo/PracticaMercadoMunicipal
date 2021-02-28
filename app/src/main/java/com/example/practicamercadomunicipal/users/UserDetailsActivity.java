@@ -139,8 +139,11 @@ public class UserDetailsActivity extends AppCompatActivity {
         emailTextView.setText(user.email);
         nameTextView.setText(user.name);
         balanceTextView.setText(balanceToString(user.balance));
-
+        if (user.imgStorage != null) {
+            postImageUri = Uri.parse(user.imgStorage);
+        }
         if (user.image != null) {
+            imageUri = Uri.parse(user.image);
             Glide.with(this).load(user.image).centerCrop().into(imageView);
         }
     }
@@ -161,7 +164,7 @@ public class UserDetailsActivity extends AppCompatActivity {
                 }).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         imageUri = Objects.requireNonNull(task.getResult());
-                        if (postImageUri != null) {
+                        if (postImageUri != null && !postImageUri.equals(Uri.EMPTY)) {
                             StorageReference previousFileReference = storage.getReference("images").child(postImageUri.getLastPathSegment());
                             previousFileReference.delete();
                         }
