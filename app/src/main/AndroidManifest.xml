@@ -22,6 +22,8 @@
         <activity android:name=".products.ProductsActivity"/>
         <activity android:name=".users.UsersActivity"/>
         <activity android:name=".users.UserDetailsActivity"/>
+        <activity android:name=".users.invoices.InvoiceDetailsActivity"/>
+        <activity android:name=".users.invoices.UserInvoicesActivity"/>
         <activity
             android:name=".SplashActivity"
             android:theme="@style/SplashScreenTheme">

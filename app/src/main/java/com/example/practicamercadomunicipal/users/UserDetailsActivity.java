@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.example.practicamercadomunicipal.R;
 import com.example.practicamercadomunicipal.data.AppData;
 import com.example.practicamercadomunicipal.models.User;
+import com.example.practicamercadomunicipal.users.invoices.UserInvoicesActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -38,7 +40,8 @@ public class UserDetailsActivity extends AppCompatActivity {
     Uri imageUri, postImageUri;
     ProgressBar progressBar;
     User user;
-    private TextView balanceTextView;
+    TextView balanceTextView;
+    Button seeInvoicesButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +72,10 @@ public class UserDetailsActivity extends AppCompatActivity {
             startActivityForResult(galleryIntent, PICK_IMAGE);
         });
         progressBar = findViewById(R.id.user_details_progressbar);
+        seeInvoicesButton = findViewById(R.id.see_user_invoices);
+        seeInvoicesButton.setOnClickListener(v -> {
+            startActivity(new Intent(this, UserInvoicesActivity.class).putExtra("uid", user.userID));
+        });
     }
 
     private void setupToolbar() {

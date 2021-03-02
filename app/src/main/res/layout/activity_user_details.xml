@@ -88,4 +88,14 @@
         app:layout_constraintStart_toStartOf="@+id/user_details_image_imageview"
         app:layout_constraintTop_toTopOf="@+id/user_details_image_imageview" />
 
+    <Button
+        android:id="@+id/see_user_invoices"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Ver facturas"
+        app:layout_constraintEnd_toEndOf="@+id/user_details_balance_textview"
+        app:layout_constraintStart_toStartOf="@+id/user_details_balance_textview"
+        app:layout_constraintTop_toBottomOf="@+id/user_details_balance_textview" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
