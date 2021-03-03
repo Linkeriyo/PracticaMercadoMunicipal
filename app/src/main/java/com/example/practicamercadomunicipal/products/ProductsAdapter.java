@@ -58,13 +58,6 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setMessage("¿Seguro que quieres eliminar el producto? Los datos no se podrán recuperar.")
                     .setPositiveButton("Sí", (dialog, which) -> {
-                        //Borrar la imagen de firebase.
-                        Uri storageUri = Uri.parse(productList.get(position).imgStorage);
-                        if (storageUri != null && !storageUri.equals(Uri.EMPTY)) {
-                            StorageReference imagesReference = FirebaseStorage.getInstance().getReference("images");
-                            imagesReference.child(storageUri.getLastPathSegment()).delete();
-                        }
-
                         //Borrar el producto de la base de datos.
                         productList.remove(product);
                         DatabaseReference storeReference = FirebaseDatabase.getInstance()

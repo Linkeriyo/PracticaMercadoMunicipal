@@ -88,7 +88,8 @@ public class EditStoreActivity extends AppCompatActivity {
     private void putValues() {
         int storeNumber = getIntent().getIntExtra("storeNumber", 0);
         store = AppData.storeList.get(storeNumber);
-
+        imageUri = Uri.parse(store.image);
+        postImageUri = Uri.parse(store.imgStorage);
         idTextView.setText(store.ID);
         nameTextView.setText(store.name);
         Glide.with(this).load(store.image).centerCrop().into(imageView);

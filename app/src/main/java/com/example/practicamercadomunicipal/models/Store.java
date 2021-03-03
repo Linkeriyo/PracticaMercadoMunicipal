@@ -29,4 +29,18 @@ public class Store {
         this.imgStorage = imgStorage.toString();
         products = new ArrayList<>();
     }
+
+    public void createOrOverrideProduct(Product newProduct) {
+        Product currentProduct = null;
+        for (Product product : products) {
+            if (product.ID.equals(newProduct.ID)) {
+                currentProduct = product;
+            }
+        }
+        if (currentProduct != null) {
+            products.remove(currentProduct);
+        }
+
+        products.add(newProduct);
+    }
 }

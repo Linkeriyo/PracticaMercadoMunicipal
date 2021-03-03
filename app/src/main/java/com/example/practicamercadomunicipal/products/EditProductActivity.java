@@ -94,9 +94,10 @@ public class EditProductActivity extends AppCompatActivity {
                 double stock = Double.parseDouble(stockTextView.getText().toString());
                 boolean kgUnit = kgSwitch.isChecked();
                 Product product = new Product(storeID, id, desc, price, imageUri, postImageUri, stock, kgUnit);
-                productList.add(product);
+                AppData.getStoreById(storeID).createOrOverrideProduct(product);
                 DatabaseReference storeReference = database.getReference("stores").child(storeID);
                 storeReference.setValue(AppData.getStoreById(storeID));
+                finish();
             } else {
                 Toast.makeText(this,
                         "Los campos no deben estar vacíos",
