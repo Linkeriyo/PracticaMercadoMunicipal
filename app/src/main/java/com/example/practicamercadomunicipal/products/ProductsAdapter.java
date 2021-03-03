@@ -52,7 +52,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         holder.productNameTextView.setText(product.desc);
         holder.productIdTextView.setText(product.ID);
         holder.productPriceTextView.setText(priceToString(product.price));
-        holder.productStockTextView.setText(stockToString(product.stock));
+        if (product.kgUnit) {
+            holder.productStockTextView.setText(weightToString(product.stock));
+        } else {
+            holder.productStockTextView.setText(stockToString(product.stock));
+        }
 
         holder.deleteProductButton.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
